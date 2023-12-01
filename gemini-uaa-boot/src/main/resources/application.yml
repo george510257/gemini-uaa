@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gemini-uaa-boot
+  profiles:
+    active: dev
+    include: cloud
