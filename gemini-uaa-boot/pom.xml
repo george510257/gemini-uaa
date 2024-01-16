@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.gls.gemini.uaa.sdk</groupId>
             <artifactId>gemini-uaa-sdk</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
