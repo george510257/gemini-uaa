@@ -4,13 +4,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * uaa 启动类
+ * Gemini UAA启动类
+ *
+ * @author gemini 自动生成
+ * @version 0.0.1-SNAPSHOT
+ * @date 2024-02-19
  */
 @SpringBootApplication
 public class UaaBootApplication {
-
     /**
-     * uaa 启动入口
+     * Gemini UAA启动入口
      *
      * @param args 启动参数
      */

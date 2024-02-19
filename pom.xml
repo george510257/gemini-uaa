@@ -11,11 +11,14 @@
 
     <groupId>com.gls.gemini.uaa</groupId>
     <artifactId>gemini-uaa</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <name>Gemini UAA</name>
+    <description>认证授权服务</description>
+
     <modules>
         <module>gemini-uaa-boot</module>
         <module>gemini-uaa-sdk</module>
     </modules>
-
-
 </project>

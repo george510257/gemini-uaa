@@ -14,17 +14,17 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.gls.gemini.uaa.sdk</groupId>
+            <artifactId>gemini-uaa-sdk</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.gls.gemini.boot.core</groupId>
             <artifactId>gemini-boot-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.gls.gemini.boot.cloud</groupId>
             <artifactId>gemini-boot-cloud</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.gls.gemini.uaa.sdk</groupId>
-            <artifactId>gemini-uaa-sdk</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

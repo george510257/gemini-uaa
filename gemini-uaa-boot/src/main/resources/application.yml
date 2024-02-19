@@ -1,6 +1,38 @@
 spring:
   application:
-    name: gemini-uaa-boot
+    name: gemini-uaa
   profiles:
     active: dev
     include: cloud
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://docker-server:3306/gemini_uaa?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+  data:
+    redis:
+      host: docker-server
+      port: 6379
+      database: 7
+      timeout: 10000
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+      key-prefix: "gemini-uaa:cache:"
+      time-to-live: 1000
+gemini:
+  open-api:
+    enabled: true
+    info:
+      version: "0.0.1-SNAPSHOT"
+      title: "Gemini UAA Boot"
+      description: "认证授权服务"
+      contact:
+        name: "Gemini UAA"
+        email: "gemini@glseven.com"
+        url: "https://www.glseven.com"
+      license:
+        name: "Apache License 2.0"
+        url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+        identifier: "Apache-2.0"
