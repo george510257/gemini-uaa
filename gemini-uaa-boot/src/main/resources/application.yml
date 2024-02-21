@@ -36,3 +36,6 @@ gemini:
         name: "Apache License 2.0"
         url: "https://www.apache.org/licenses/LICENSE-2.0.html"
         identifier: "Apache-2.0"
+logging:
+  level:
+    org.springframework.security: DEBUG
