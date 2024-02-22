@@ -1,0 +1,9 @@
+### 获取token
+POST http://localhost:8080/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+
+### 验证token
+POST http://localhost:8080/demo/hello
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3VhYS5nZW1pbmkuZ2xzLmNvbSIsInN1YiI6InVzZXIiLCJleHAiOjE3MDg1NjY2NTQsImlhdCI6MTcwODU2MzA1NCwic2NvcGUiOiJST0xFX1VTRVIifQ.bAHXi5_8tU-YlpUQeY-LELPaA6FYIfTeTEvefDLLqxXuK2X_-2_cVT5kap7VzzMMR6fMIiajwzu-zUYROJti1obcu8khXJENJb91oHm0GKNiOsxT8bOcoMYFGrnmPAwmAwRd-H1nLOOCh0FP9rUuK_vYfz-uhPkUWYdAMDSEKuqQh8oG79WxZ3Wj8JD4kjQ9X4880BXzkKksNa1pKwA6YZ6fvFEnC9ZbYr85nYj3IPjPhkIG94QC7uyiuTKuhkpb8fjm67OTzmqaMFXLUMYxgm6B4EhLYYat8j7ILgkvyuPTmGtBaUp8UJKSrcaDUBdGrRl3QuXnOFFitOzE0DLPuA
