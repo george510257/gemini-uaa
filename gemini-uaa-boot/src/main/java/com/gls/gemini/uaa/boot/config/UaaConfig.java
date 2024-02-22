@@ -58,6 +58,7 @@ public class UaaConfig {
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .redirectUri("http://localhost:8080/login/oauth2/code/uaa")
                 .redirectUri("http://localhost:8080/authorized")
+                .postLogoutRedirectUri("http://localhost:8080/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
