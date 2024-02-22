@@ -1,5 +1,6 @@
 package com.gls.gemini.uaa.boot.config;
 
+import com.gls.gemini.uaa.boot.constants.UaaSecurityProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

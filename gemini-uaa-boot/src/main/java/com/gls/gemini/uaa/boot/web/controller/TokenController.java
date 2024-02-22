@@ -2,7 +2,7 @@ package com.gls.gemini.uaa.boot.web.controller;
 
 import com.gls.gemini.common.core.domain.Result;
 import com.gls.gemini.common.core.enums.ResultEnums;
-import com.gls.gemini.uaa.boot.config.UaaSecurityProperties;
+import com.gls.gemini.uaa.boot.constants.UaaSecurityProperties;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

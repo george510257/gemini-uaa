@@ -1,6 +1,6 @@
 package com.gls.gemini.uaa.boot;
 
-import com.gls.gemini.uaa.boot.config.UaaSecurityProperties;
+import com.gls.gemini.uaa.boot.constants.UaaSecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

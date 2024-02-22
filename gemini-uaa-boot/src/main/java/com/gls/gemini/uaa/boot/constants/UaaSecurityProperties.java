@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.config;
+package com.gls.gemini.uaa.boot.constants;
 
 import com.gls.gemini.common.core.base.BaseProperties;
 import com.gls.gemini.common.core.constant.CommonConstants;
