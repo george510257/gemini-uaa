@@ -36,11 +36,6 @@ gemini:
         name: "Apache License 2.0"
         url: "https://www.apache.org/licenses/LICENSE-2.0.html"
         identifier: "Apache-2.0"
-  uaa:
-    security:
-      jwt:
-        public-key: "classpath:gemini-uaa.pub"
-        private-key: "classpath:gemini-uaa.pem"
 logging:
   level:
     org.springframework.security: DEBUG
