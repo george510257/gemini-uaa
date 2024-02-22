@@ -20,21 +20,49 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    /**
+     * 授权请求定制
+     */
     @Resource
     private AuthorizeHttpRequestsCustomizer authorizeHttpRequestsCustomizer;
+    /**
+     * CSRF定制
+     */
     @Resource
     private CsrfCustomizer csrfCustomizer;
+    /**
+     * 异常处理定制
+     */
     @Resource
     private ExceptionHandlingCustomizer exceptionHandlingCustomizer;
+    /**
+     * HTTP基本定制
+     */
     @Resource
     private HttpBasicCustomizer httpBasicCustomizer;
+    /**
+     * OAuth2授权服务器定制
+     */
     @Resource
     private OAuth2AuthorizationServerCustomizer oauth2AuthorizationServerCustomizer;
+    /**
+     * OAuth2资源服务器定制
+     */
     @Resource
     private OAuth2ResourceServerCustomizer oauth2ResourceServerCustomizer;
+    /**
+     * 会话管理定制
+     */
     @Resource
     private SessionManagementCustomizer sessionManagementCustomizer;
 
+    /**
+     * 默认安全过滤链
+     *
+     * @param http HTTP安全
+     * @return 安全过滤链
+     * @throws Exception 异常
+     */
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
@@ -47,6 +75,13 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * 授权服务器安全过滤链
+     *
+     * @param http HTTP安全
+     * @return 安全过滤链
+     * @throws Exception 异常
+     */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -61,6 +96,11 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * 授权服务器设置
+     *
+     * @return 授权服务器设置
+     */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();

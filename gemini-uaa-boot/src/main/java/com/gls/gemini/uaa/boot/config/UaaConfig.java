@@ -17,6 +17,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+/**
+ * Uaa配置
+ */
 @Configuration
 public class UaaConfig {
 
@@ -46,6 +49,11 @@ public class UaaConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /**
+     * 注册客户端
+     *
+     * @return 注册客户端
+     */
     @Bean
     @ConditionalOnMissingBean
     public RegisteredClientRepository registeredClientRepository() {
