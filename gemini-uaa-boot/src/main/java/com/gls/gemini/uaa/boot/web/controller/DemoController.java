@@ -13,7 +13,7 @@ public class DemoController {
 
     @PostMapping("/hello")
     public Result<String> hello(Authentication authentication) {
-        String message = String.format("Hello, %s ！！！", authentication.getName());
+        String message = String.format("Hello, %s ！！！", authentication.getPrincipal());
         return ResultEnums.SUCCESS.getResult(message);
     }
 }

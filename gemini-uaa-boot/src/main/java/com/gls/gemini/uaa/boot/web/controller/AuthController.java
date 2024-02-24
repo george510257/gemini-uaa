@@ -17,15 +17,15 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/token")
-public class TokenController {
+@RequestMapping("/auth")
+public class AuthController {
 
     @Resource
     private JwtEncoder jwtEncoder;
     @Resource
     private UaaSecurityProperties securityProperties;
 
-    @PostMapping
+    @PostMapping("/token")
     public Result<String> token(Authentication authentication) {
         Instant now = Instant.now();
         long expiration = securityProperties.getJwt().getExpiration();
