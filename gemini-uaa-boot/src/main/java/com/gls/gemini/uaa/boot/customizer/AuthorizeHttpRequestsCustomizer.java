@@ -17,6 +17,8 @@ public class AuthorizeHttpRequestsCustomizer implements Customizer<AuthorizeHttp
      */
     @Override
     public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+        // 授权请求
+        registry.requestMatchers("/auth/**").permitAll();
         // 所有请求都需要认证
         registry.anyRequest().authenticated();
     }

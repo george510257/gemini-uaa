@@ -19,10 +19,9 @@ public class ExceptionHandlingCustomizer implements Customizer<ExceptionHandling
      */
     @Override
     public void customize(ExceptionHandlingConfigurer<HttpSecurity> configurer) {
-        configurer
-                // 自定义认证入口点 (401) 处理器
-                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                // 自定义拒绝访问处理器 (403) 处理器
-                .accessDeniedHandler(new BearerTokenAccessDeniedHandler());
+        // 配置异常处理 - Bearer Token 认证入口点
+        configurer.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint());
+        // 配置异常处理 - Bearer Token 访问拒绝处理器
+        configurer.accessDeniedHandler(new BearerTokenAccessDeniedHandler());
     }
 }

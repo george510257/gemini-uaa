@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,20 +27,10 @@ public class WebSecurityConfig {
     @Resource
     private AuthorizeHttpRequestsCustomizer authorizeHttpRequestsCustomizer;
     /**
-     * CSRF定制
-     */
-    @Resource
-    private CsrfCustomizer csrfCustomizer;
-    /**
      * 异常处理定制
      */
     @Resource
     private ExceptionHandlingCustomizer exceptionHandlingCustomizer;
-    /**
-     * HTTP基本定制
-     */
-    @Resource
-    private HttpBasicCustomizer httpBasicCustomizer;
     /**
      * OAuth2授权服务器定制
      */
@@ -66,8 +57,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
-        http.csrf(csrfCustomizer);
-        http.httpBasic(httpBasicCustomizer);
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.httpBasic(Customizer.withDefaults());
         http.formLogin(Customizer.withDefaults());
         http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
         http.sessionManagement(sessionManagementCustomizer);
@@ -89,7 +80,7 @@ public class WebSecurityConfig {
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         http.securityMatcher(endpointsMatcher);
         http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
-        http.csrf(csrfCustomizer);
+        http.csrf(AbstractHttpConfigurer::disable);
         http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
         http.exceptionHandling(exceptionHandlingCustomizer);
         http.with(authorizationServerConfigurer, oauth2AuthorizationServerCustomizer);
