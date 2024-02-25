@@ -36,6 +36,18 @@ gemini:
         name: "Apache License 2.0"
         url: "https://www.apache.org/licenses/LICENSE-2.0.html"
         identifier: "Apache-2.0"
+    security:
+      - basicAuth: [ ]
+      - jwt: [ ]
+    components:
+      security-schemes:
+        basicAuth:
+          type: http
+          scheme: basic
+        jwt:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
 logging:
   level:
     org.springframework.security: DEBUG
