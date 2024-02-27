@@ -16,4 +16,8 @@ Content-Type: application/json
 ### 获取well-known
 GET http://localhost:8080/.well-known/oauth-authorization-server
 Content-Type: application/json
+
+### swagger
+GET http://localhost:8080/gemini-uaa/v3/api-docs
+Content-Type: application/json
 ```
