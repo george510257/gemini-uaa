@@ -10,11 +10,11 @@ Content-Type: application/json
 Authorization: Bearer eyJraWQiOiI5N2U2ZGFmZS1jMjNmLTQ1OWYtOWIwOS0wODljNGNhOTc2YzYiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3VhYS5nZW1pbmkuZ2xzLmNvbSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzA4ODcxODAwLCJpYXQiOjE3MDg4NjgyMDAsInNjb3BlIjoiIn0.GY5NHwyP2RwBgnhg-llqU4i_KqMD6ln5PiR0nCN6meKAD2zOiZ3Os72avdH3_aCXE83-Y9y9MLAkFg7kmXQKBFmlDKRfk-JSRf0YS2xUsCjBzpgZkfEjCWViOG3sPJlgdKK-hwaZIJ6eSGTYouWai6FIHzlLDgNIflI3z78Jx1xwycoqWkVNOOZidq5vwELBGbAenZjfmP6jPZ3tqAVPXv4AosWjwkAEtMZyK_M7zieZtTyn5eCXO-aRmeoT8webbjEXb02Bpm7OXKmb4LPf3AYDPmO4F75mVBKLJ1BITA6WDtNwi3nnTbFs92whk-BFSCXC7iMjD6RzPHzP25HFPA
 
 ### 获取jwks
-GET http://localhost:8080/oauth2/jwks
+GET http://localhost:8082/oauth2/jwks
 Content-Type: application/json
 
 ### 获取well-known
-GET http://localhost:8080/.well-known/oauth-authorization-server
+GET http://localhost:8082/.well-known/oauth-authorization-server
 Content-Type: application/json
 
 ### swagger
