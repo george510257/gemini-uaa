@@ -5,19 +5,23 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Basic YWRtaW46cGFzc3dvcmQ=
 
 ### 验证token
-POST http://localhost:8082/demo/hello
+POST http://localhost:8080/gemini-uaa/demo/hello
 Content-Type: application/json
-Authorization: Bearer eyJraWQiOiI5N2U2ZGFmZS1jMjNmLTQ1OWYtOWIwOS0wODljNGNhOTc2YzYiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3VhYS5nZW1pbmkuZ2xzLmNvbSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzA4ODcxODAwLCJpYXQiOjE3MDg4NjgyMDAsInNjb3BlIjoiIn0.GY5NHwyP2RwBgnhg-llqU4i_KqMD6ln5PiR0nCN6meKAD2zOiZ3Os72avdH3_aCXE83-Y9y9MLAkFg7kmXQKBFmlDKRfk-JSRf0YS2xUsCjBzpgZkfEjCWViOG3sPJlgdKK-hwaZIJ6eSGTYouWai6FIHzlLDgNIflI3z78Jx1xwycoqWkVNOOZidq5vwELBGbAenZjfmP6jPZ3tqAVPXv4AosWjwkAEtMZyK_M7zieZtTyn5eCXO-aRmeoT8webbjEXb02Bpm7OXKmb4LPf3AYDPmO4F75mVBKLJ1BITA6WDtNwi3nnTbFs92whk-BFSCXC7iMjD6RzPHzP25HFPA
+Authorization: Bearer eyJraWQiOiJlNTQwNmZiNS0xMjBiLTQ0YTItOGRiZi0zNWU4NDFjNmM2MzAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3VhYS5nZW1pbmkuZ2xzLmNvbSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzA5MTc1NjI5LCJpYXQiOjE3MDkxNzIwMjksInNjb3BlIjoiIn0.VwdpjihkUuy22p5SDI0IgmdzZ0SnyGSZEJAtZfqxEffCAvQdnlU7JaLfnX91SXmvpwJwJ6KgL-4V5PCdguf6Y4Ef1SSmNDRNT1PD4WkO89-lcbFCwlPi6QKx5eGKP-5O7dDuvy5L-789HH76hNJRJIY-OdgayMYu0PEE_iccWqtmy1vq_Y23cd0czRtUcuWBYLUbFJW_1prNw3qLlatOhdiGS3iGfP2vWzIV_04WlRQTTKiWZ6dc9Fo3VgXFH0Mvpl4F0ERSgKbSS48NUQhRe5n2ACbhgVEDoJyD-Go_49XQK8aeoHjwlC_ofZ69Pvt0ypttmyZT0R4nLNBO7Qqeeg
 
 ### 获取jwks
-GET http://localhost:8082/oauth2/jwks
+GET http://localhost:8080/gemini-uaa/oauth2/jwks
 Content-Type: application/json
 
 ### 获取well-known
-GET http://localhost:8082/.well-known/oauth-authorization-server
+GET http://localhost:8080/gemini-uaa/.well-known/oauth-authorization-server
 Content-Type: application/json
 
 ### swagger
 GET http://localhost:8080/gemini-uaa/v3/api-docs
 Content-Type: application/json
+
+### 获取token
+GET http://localhost:8082/oauth2/authorize?response_type=code&client_id=client&
+    redirect_uri=http://localhost:8080/login/oauth2/code/uaa&scope=openid&state=123456
 ```
