@@ -21,21 +21,6 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 public class UaaConfig {
 
     /**
-     * 用户信息
-     *
-     * @param passwordEncoder 密码加密
-     * @return 用户信息
-     */
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-//        // 创建用户 user 密码 password 角色 USER
-//        String password = passwordEncoder.encode("password");
-//        return new InMemoryUserDetailsManager(User.withUsername("user")
-//                .password(password).roles("USER").build());
-//    }
-
-    /**
      * 密码加密
      *
      * @return 密码加密

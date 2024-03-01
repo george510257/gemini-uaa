@@ -32,7 +32,6 @@ gemini:
         name: "Gemini UAA"
         email: "gemini@glseven.com"
         url: "https://www.glseven.com"
-
     security:
       - basicAuth: [ ]
       - jwt: [ ]
@@ -45,6 +44,11 @@ gemini:
           type: http
           scheme: bearer
           bearerFormat: JWT
+  security:
+    ignore:
+      ignore-urls:
+        - /v3/api-docs/**
+        - /webjars/**
 logging:
   level:
     org.springframework.security: DEBUG
