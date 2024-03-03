@@ -1,6 +1,6 @@
 ### 获取token
 # @no-cookie-jar
-POST http://localhost:8080/gemini-uaa/auth/token
+POST http://localhost:8082/auth/token
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic YWRtaW46cGFzc3dvcmQ=
 

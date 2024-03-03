@@ -46,9 +46,8 @@ gemini:
           bearerFormat: JWT
   security:
     ignore:
-      ignore-urls:
-        - /v3/api-docs/**
-        - /webjars/**
+      ignore-patterns:
+        - /auth/**
 logging:
   level:
     org.springframework.security: DEBUG
