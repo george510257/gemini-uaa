@@ -10,11 +10,11 @@ Content-Type: application/json
 Authorization: Bearer eyJraWQiOiJlNTQwNmZiNS0xMjBiLTQ0YTItOGRiZi0zNWU4NDFjNmM2MzAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3VhYS5nZW1pbmkuZ2xzLmNvbSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzA5MTc1NjI5LCJpYXQiOjE3MDkxNzIwMjksInNjb3BlIjoiIn0.VwdpjihkUuy22p5SDI0IgmdzZ0SnyGSZEJAtZfqxEffCAvQdnlU7JaLfnX91SXmvpwJwJ6KgL-4V5PCdguf6Y4Ef1SSmNDRNT1PD4WkO89-lcbFCwlPi6QKx5eGKP-5O7dDuvy5L-789HH76hNJRJIY-OdgayMYu0PEE_iccWqtmy1vq_Y23cd0czRtUcuWBYLUbFJW_1prNw3qLlatOhdiGS3iGfP2vWzIV_04WlRQTTKiWZ6dc9Fo3VgXFH0Mvpl4F0ERSgKbSS48NUQhRe5n2ACbhgVEDoJyD-Go_49XQK8aeoHjwlC_ofZ69Pvt0ypttmyZT0R4nLNBO7Qqeeg
 
 ### 获取jwks
-GET http://localhost:8080/gemini-uaa/oauth2/jwks
+GET http://localhost:8082/oauth2/jwks
 Content-Type: application/json
 
 ### 获取well-known
-GET http://localhost:8080/gemini-uaa/.well-known/oauth-authorization-server
+GET http://localhost:8082/.well-known/oauth-authorization-server
 Content-Type: application/json
 
 ### swagger
