@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gls.gemini.uaa.boot.web.mapper.TokenInfoMapper">
+
+    <resultMap id="tokenInfoResultMap" type="com.gls.gemini.uaa.boot.web.entity.TokenInfoEntity">
+        <id column="id" property="id"/>
+        <result column="token_value" property="tokenValue"/>
+        <result column="token_type" property="tokenType"/>
+        <result column="issued_at" property="issuedAt"/>
+        <result column="expires_at" property="expiresAt"/>
+        <result column="metadata" property="metadata"/>
+        <result column="access_token_type" property="accessTokenType"/>
+        <result column="access_token_scopes" property="accessTokenScopes"/>
+        <result column="authorization_id" property="authorizationId"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="version" property="version"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="update_user_id" property="updateUserId"/>
+        <result column="create_user_name" property="createUserName"/>
+        <result column="update_user_name" property="updateUserName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="tokenInfoSql">
+        id,token_value,token_type,issued_at,expires_at,metadata,access_token_type,access_token_scopes,authorization_id,tenant_id,version,deleted,create_user_id,create_user_name,create_time,update_user_id,update_user_name,update_time
+    </sql>
+
+</mapper>

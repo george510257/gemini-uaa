@@ -3,7 +3,7 @@ package com.gls.gemini.uaa.boot.web.controller;
 import com.gls.gemini.common.core.domain.Result;
 import com.gls.gemini.common.core.enums.ResultEnums;
 import com.gls.gemini.uaa.boot.constants.UaaSecurityProperties;
-import com.gls.gemini.uaa.boot.web.service.AuthService;
+import com.gls.gemini.uaa.boot.web.service.UserInfoService;
 import com.gls.gemini.uaa.sdk.vo.LoginRequestVo;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.Authentication;
@@ -30,7 +30,7 @@ public class AuthController {
     @Resource
     private UaaSecurityProperties securityProperties;
     @Resource
-    private AuthService authService;
+    private UserInfoService userInfoService;
     @Resource
     private PasswordEncoder passwordEncoder;
 
@@ -51,7 +51,7 @@ public class AuthController {
 
     @PostMapping("login")
     public Result<String> login(@RequestBody LoginRequestVo requestVo) {
-        UserDetails userDetails = authService.loadUserByUsername(requestVo.getUsername());
+        UserDetails userDetails = userInfoService.loadUserByUsername(requestVo.getUsername());
         if (passwordEncoder.matches(requestVo.getPassword(), userDetails.getPassword())) {
             Instant now = Instant.now();
             long expiration = securityProperties.getJwt().getExpiration();
