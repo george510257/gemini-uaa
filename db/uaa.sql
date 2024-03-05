@@ -60,6 +60,7 @@ create table t_authorization_info
     grant_type       varchar(100)     default ''                                            not null comment '授权类型',
     scopes           varchar(1000)    default ''                                            not null comment '作用域',
     attributes       varchar(2000)    default ''                                            not null comment '属性',
+    consent          tinyint unsigned default 0                                             not null comment '是否同意 0:否 1:是',
     tenant_id        bigint unsigned  default 0                                             not null comment '租户id 0:公共租户',
     version          int unsigned     default 0                                             not null comment '版本号',
     deleted          tinyint unsigned default 0                                             not null comment '是否删除 0:否 1:是',
