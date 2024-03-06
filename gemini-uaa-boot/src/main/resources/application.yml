@@ -32,3 +32,5 @@ gemini:
         name: "Gemini UAA"
         email: "gemini@glseven.com"
         url: "https://www.glseven.com"
+server:
+  port: 8082

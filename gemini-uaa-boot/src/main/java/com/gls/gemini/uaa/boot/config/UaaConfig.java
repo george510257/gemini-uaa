@@ -4,8 +4,6 @@ import cn.hutool.core.lang.UUID;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -19,17 +17,6 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
  */
 @Configuration
 public class UaaConfig {
-
-    /**
-     * 密码加密
-     *
-     * @return 密码加密
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
     /**
      * 注册客户端
