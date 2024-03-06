@@ -29,10 +29,6 @@ public class AuthorizationService implements OAuth2AuthorizationService {
         redisHelper.set(buildKey(authorization.getId()), authorization);
     }
 
-    private String buildKey(String id) {
-        return PREFIX + id;
-    }
-
     @Override
     public void remove(OAuth2Authorization authorization) {
         redisHelper.del(buildKey(authorization.getId()));
@@ -45,13 +41,17 @@ public class AuthorizationService implements OAuth2AuthorizationService {
 
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-        List<OAuth2Authorization> authorizations = redisHelper.getValues(PREFIX + "*", OAuth2Authorization.class);
+        List<OAuth2Authorization> authorizations = redisHelper.getValues(buildKey("*"), OAuth2Authorization.class);
         for (OAuth2Authorization authorization : authorizations) {
             if (hasToken(authorization, token, tokenType)) {
                 return authorization;
             }
         }
         return null;
+    }
+
+    private String buildKey(String id) {
+        return PREFIX + id;
     }
 
     private boolean hasToken(OAuth2Authorization authorization, String token, OAuth2TokenType tokenType) {
