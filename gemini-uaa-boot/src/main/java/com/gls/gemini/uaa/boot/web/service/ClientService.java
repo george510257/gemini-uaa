@@ -38,7 +38,7 @@ public class ClientService implements RegisteredClientRepository {
 
     @Override
     public RegisteredClient findByClientId(String clientId) {
-        ClientInfoVo vo = clientInfoFeign.getByClientId(clientId);
+        ClientInfoVo vo = clientInfoFeign.getByClientId(clientId).getData();
         if (vo != null) {
             return clientConverter.reverse(vo);
         }
