@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -32,6 +33,7 @@ public class JwtConfig {
      * @throws NoSuchAlgorithmException 异常
      */
     @Bean
+    @ConditionalOnMissingBean
     public KeyPair keyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
@@ -45,6 +47,7 @@ public class JwtConfig {
      * @return Jwt解码器
      */
     @Bean
+    @ConditionalOnMissingBean
     public JwtDecoder jwtDecoder(KeyPair keyPair) {
         return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
     }
@@ -56,6 +59,7 @@ public class JwtConfig {
      * @return JWK源
      */
     @Bean
+    @ConditionalOnMissingBean
     public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
@@ -74,6 +78,7 @@ public class JwtConfig {
      * @return Jwt编码器
      */
     @Bean
+    @ConditionalOnMissingBean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);
     }
