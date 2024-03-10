@@ -52,6 +52,11 @@ public class AuthorizationServerConfig {
     }
 
     private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+        // 配置静态资源
+        registry.requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll();
+        // 配置授权请求
+        registry.requestMatchers(UaaConstants.LOGIN_PAGE, UaaConstants.CONSENT_PAGE).permitAll();
+        // 其他请求需要认证
         registry.anyRequest().authenticated();
     }
 
