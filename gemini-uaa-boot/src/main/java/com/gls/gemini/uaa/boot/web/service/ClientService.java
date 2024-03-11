@@ -17,7 +17,7 @@ public class ClientService implements RegisteredClientRepository {
 
     @Override
     public void save(RegisteredClient registeredClient) {
-        ClientInfoVo vo = clientInfoFeign.get(Long.valueOf(registeredClient.getId())).getData();
+        ClientInfoVo vo = clientInfoFeign.getByClientId(registeredClient.getClientId()).getData();
         if (vo == null) {
             vo = clientConverter.convert(registeredClient);
             clientInfoFeign.insert(vo);

@@ -53,14 +53,15 @@
                 <input name="user_code" th:if="${userCode}" th:value="${userCode}" type="hidden">
 
                 <div class="form-check py-1" th:each="scope: ${scopes}">
-                    <input class="form-check-input"
-                           name="scope"
-                           style="float: none"
-                           th:id="${scope.scope}"
-                           th:value="${scope.scope}"
-                           type="checkbox">
                     <label class="form-check-label fw-bold px-2" th:for="${scope.scope}"
-                           th:text="${scope.scope}"></label>
+                           th:text="${scope.scope}">
+                        <input class="form-check-input"
+                               name="scope"
+                               style="float: none"
+                               th:id="${scope.scope}"
+                               th:value="${scope.scope}"
+                               type="checkbox">
+                    </label>
                     <p class="text-primary" th:text="${scope.description}"></p>
                 </div>
 
@@ -68,14 +69,15 @@
                     You have already granted the following permissions to the above app:
                 </p>
                 <div class="form-check py-1" th:each="scope: ${previouslyApprovedScopes}">
-                    <input checked
-                           class="form-check-input"
-                           disabled
-                           style="float: none"
-                           th:id="${scope.scope}"
-                           type="checkbox">
                     <label class="form-check-label fw-bold px-2" th:for="${scope.scope}"
-                           th:text="${scope.scope}"></label>
+                           th:text="${scope.scope}">
+                        <input checked
+                               class="form-check-input"
+                               disabled
+                               style="float: none"
+                               th:id="${scope.scope}"
+                               type="checkbox">
+                    </label>
                     <p class="text-primary" th:text="${scope.description}"></p>
                 </div>
 

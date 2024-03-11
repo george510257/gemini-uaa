@@ -34,3 +34,6 @@ gemini:
         url: "https://www.glseven.com"
 server:
   port: 8082
+logging:
+  level:
+    org.springframework.security: trace

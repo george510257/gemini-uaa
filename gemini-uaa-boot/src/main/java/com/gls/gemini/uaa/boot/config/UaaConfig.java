@@ -1,65 +1,75 @@
 package com.gls.gemini.uaa.boot.config;
 
 import cn.hutool.core.lang.UUID;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 
 /**
  * Uaa配置
  */
 @Configuration
 public class UaaConfig {
+    @Resource
+    private RegisteredClientRepository registeredClientRepository;
+    @Resource
+    private UserDetailsManager userDetailsService;
 
-    /**
-     * 注册客户端
-     *
-     * @return 注册客户端
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public RegisteredClientRepository registeredClientRepository() {
+    @PostConstruct
+    public void initClient() {
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                // 客户端id
-                .clientId("client")
-                // 客户端密钥
+                .clientId("messaging-client")
                 .clientSecret("{noop}secret")
-                // 客户端认证方式 - 基于请求头的客户端认证
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                // 配置资源服务器使用该客户端获取授权时的授权类型
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                // 授权码模式回调地址，可配置多个。oauth2.1精准匹配
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/uaa")
-                .redirectUri("http://127.0.0.1:8080/authorized")
+                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
                 .redirectUri("https://www.baidu.com")
-                .postLogoutRedirectUri("http://localhost:8080/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
+                .scope("message:read")
+                .scope("message:write")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
-        return new InMemoryRegisteredClientRepository(registeredClient);
+        RegisteredClient messageClient = registeredClientRepository.findByClientId("messaging-client");
+        if (messageClient == null) {
+            registeredClientRepository.save(registeredClient);
+        }
+        RegisteredClient registeredClient2 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("device-client")
+                .clientSecret("{noop}secret")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .scope("message:read")
+                .scope("message:write")
+                .build();
+        RegisteredClient deviceClient = registeredClientRepository.findByClientId("device-client");
+        if (deviceClient == null) {
+            registeredClientRepository.save(registeredClient2);
+        }
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
+    @PostConstruct
+    public void initUser() {
+        UserDetails userDetails = User.withUsername("user")
                 .password("{noop}password")
-                .authorities("USER")
+                .roles("admin", "user")
+                .authorities("message:read", "message:write")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+        UserDetails user = userDetailsService.loadUserByUsername("user");
+        if (user == null) {
+            userDetailsService.createUser(userDetails);
+        }
     }
 }

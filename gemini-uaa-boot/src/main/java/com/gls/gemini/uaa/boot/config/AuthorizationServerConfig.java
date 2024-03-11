@@ -41,21 +41,33 @@ public class AuthorizationServerConfig {
         http.csrf(this::csrfCustomizer);
         // 配置授权请求
         http.authorizeHttpRequests(this::authorizeHttpRequestsCustomizer);
-        // 配置表单登录
-        http.formLogin(this::formLoginCustomizer);
         // 返回安全过滤链
         return http.build();
     }
 
+    @Bean
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        // 配置授权请求
+        http.authorizeHttpRequests(this::authorizeHttpRequestsCustomizer);
+        // 配置登录页
+        http.formLogin(this::formLoginCustomizer);
+        // 配置资源服务器
+        http.oauth2ResourceServer(this::oauth2ResourceServerCustomizer);
+        // 配置CSRF
+        http.csrf(this::csrfCustomizer);
+        return http.build();
+    }
+
     private void formLoginCustomizer(FormLoginConfigurer<HttpSecurity> configurer) {
-        configurer.loginPage(UaaConstants.LOGIN_PAGE);
+        configurer.loginPage(UaaConstants.LOGIN_PAGE)
+                .loginProcessingUrl(UaaConstants.LOGIN_PROCESSING_URL);
     }
 
     private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         // 配置静态资源
         registry.requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll();
         // 配置授权请求
-        registry.requestMatchers(UaaConstants.LOGIN_PAGE, UaaConstants.CONSENT_PAGE).permitAll();
+        registry.requestMatchers(UaaConstants.LOGIN_PAGE, UaaConstants.CONSENT_PAGE, UaaConstants.LOGIN_PROCESSING_URL).permitAll();
         // 其他请求需要认证
         registry.anyRequest().authenticated();
     }

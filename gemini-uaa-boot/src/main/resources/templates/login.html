@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin w-100 m-auto" method="post" th:action="@{/login}">
+    <form class="form-signin w-100 m-auto" method="post" th:action="@{/auth/login}">
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
             Invalid username or password.
         </div>
