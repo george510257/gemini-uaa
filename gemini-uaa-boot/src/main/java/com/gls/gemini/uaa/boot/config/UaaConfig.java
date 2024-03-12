@@ -1,10 +1,10 @@
 package com.gls.gemini.uaa.boot.config;
 
 import cn.hutool.core.lang.UUID;
+import com.gls.gemini.sdk.core.vo.UserVo;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -13,6 +13,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.UserDetailsManager;
+
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Uaa配置
@@ -62,14 +65,20 @@ public class UaaConfig {
 
     @PostConstruct
     public void initUser() {
-        UserDetails userDetails = User.withUsername("user")
-                .password("{noop}password")
-                .roles("admin", "user")
-                .authorities("message:read", "message:write")
-                .build();
-        UserDetails user = userDetailsService.loadUserByUsername("user");
+        UserVo UserVo = new UserVo();
+        UserVo.setUsername("admin");
+        UserVo.setPassword("{noop}admin");
+        UserVo.setEmail("admin@gls.com");
+        UserVo.setMobile("18888888888");
+        UserVo.setRealName("管理员");
+        UserVo.setNickName("admin");
+        UserVo.setAvatar("https://gitee.com/gemini-arch/gemini-arch/raw/main/gemini-arch.png");
+        UserVo.setLanguage("zh-CN");
+        UserVo.setLocale(Locale.CHINA);
+        UserVo.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        UserDetails user = userDetailsService.loadUserByUsername("admin");
         if (user == null) {
-            userDetailsService.createUser(userDetails);
+            userDetailsService.createUser(UserVo);
         }
     }
 }
