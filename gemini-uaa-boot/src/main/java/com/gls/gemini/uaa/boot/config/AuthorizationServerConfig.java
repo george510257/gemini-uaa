@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationEndpointConfigurer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -59,8 +60,10 @@ public class AuthorizationServerConfig {
     }
 
     private void formLoginCustomizer(FormLoginConfigurer<HttpSecurity> configurer) {
-        configurer.loginPage(UaaConstants.LOGIN_PAGE)
-                .loginProcessingUrl(UaaConstants.LOGIN_PROCESSING_URL);
+        // 配置登录页
+        configurer.loginPage(UaaConstants.LOGIN_PAGE);
+        // 配置登录处理URL
+        configurer.loginProcessingUrl(UaaConstants.LOGIN_PROCESSING_URL);
     }
 
     private void authorizeHttpRequestsCustomizer(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
@@ -92,7 +95,12 @@ public class AuthorizationServerConfig {
         // 开启OpenID Connect 1.0协议相关端点
         configurer.oidc(Customizer.withDefaults());
         // 设置自定义用户确认授权页
-        configurer.authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.consentPage(UaaConstants.CONSENT_PAGE));
+        configurer.authorizationEndpoint(this::authorizationEndpointCustomizer);
+    }
+
+    private void authorizationEndpointCustomizer(OAuth2AuthorizationEndpointConfigurer configurer) {
+        // 设置自定义用户确认授权页
+        configurer.consentPage(UaaConstants.CONSENT_PAGE);
     }
 
 }

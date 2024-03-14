@@ -15,6 +15,7 @@ public class UserService implements UserDetailsManager {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 通过feign调用用户服务获取用户信息
         return userInfoFeign.loadUserByUsername(username).getData();
     }
 
