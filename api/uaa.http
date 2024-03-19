@@ -22,6 +22,5 @@ GET http://localhost:8080/gemini-uaa/v3/api-docs
 Content-Type: application/json
 
 ### 获取token
-GET http://localhost:8082/oauth2/authorize?response_type=code&client_id=client&
-    redirect_uri=http://localhost:8080/login/oauth2/code/uaa&scope=openid&state=123456
+POST http://localhost:8082/oauth2/token
 ```
