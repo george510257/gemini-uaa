@@ -9,6 +9,6 @@ import com.fasterxml.jackson.annotation.*;
 public abstract class AuthorizationGrantTypeMixin {
 
     @JsonCreator
-    AuthorizationGrantTypeMixin(@JsonProperty("name") String value) {
+    AuthorizationGrantTypeMixin(@JsonProperty("value") String value) {
     }
 }

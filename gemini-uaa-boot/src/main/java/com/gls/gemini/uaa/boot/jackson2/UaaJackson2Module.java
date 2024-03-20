@@ -18,7 +18,6 @@ public class UaaJackson2Module extends SimpleModule {
 
     @Override
     public void setupModule(SetupContext context) {
-        super.setupModule(context);
         context.setMixInAnnotations(OAuth2Authorization.class, OAuth2AuthorizationMixin.class);
         context.setMixInAnnotations(OAuth2AuthorizationConsent.class, OAuth2AuthorizationConsentMixin.class);
         context.setMixInAnnotations(AuthorizationGrantType.class, AuthorizationGrantTypeMixin.class);
