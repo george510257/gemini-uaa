@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gls.gemini.starter.json.util.Jackson2Util;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
@@ -22,7 +21,7 @@ public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Auth
     private static final TypeReference<AuthorizationGrantType> AUTHORIZATION_GRANT_TYPE = new TypeReference<>() {
     };
 
-    private static final TypeReference<Map<Class<? extends OAuth2Token>, OAuth2Authorization.Token<?>>> TOKENS = new TypeReference<>() {
+    private static final TypeReference<Map<String, OAuth2Authorization.Token<?>>> TOKENS = new TypeReference<>() {
     };
 
     @Override
@@ -37,11 +36,14 @@ public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Auth
         String principalName = Jackson2Util.findStringValue(node, "principalName");
         AuthorizationGrantType authorizationGrantType = Jackson2Util.findValue(node, "authorizationGrantType", AUTHORIZATION_GRANT_TYPE, mapper);
         Set<String> authorizedScopes = Jackson2Util.findValue(node, "authorizedScopes", Jackson2Util.SET_STRING_TYPE_REFERENCE, mapper);
-        Map<Class<? extends OAuth2Token>, OAuth2Authorization.Token<?>> tokens = Jackson2Util.findValue(node, "tokens", TOKENS, mapper);
+        Map<String, OAuth2Authorization.Token<?>> tokens = Jackson2Util.findValue(node, "tokens", TOKENS, mapper);
         Map<String, Object> attributes = Jackson2Util.findValue(node, "attributes", Jackson2Util.MAP_STRING_OBJECT_TYPE_REFERENCE, mapper);
 
         // 构建OAuth2Authorization对象
-        OAuth2Authorization.Builder builder = OAuth2Authorization.withRegisteredClient(RegisteredClient.withId(registeredClientId).build())
+        OAuth2Authorization.Builder builder = OAuth2Authorization.withRegisteredClient(RegisteredClient.withId(registeredClientId)
+                        .clientId("test-client-id")
+                        .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                        .build())
                 .id(id)
                 .principalName(principalName)
                 .authorizationGrantType(authorizationGrantType)
