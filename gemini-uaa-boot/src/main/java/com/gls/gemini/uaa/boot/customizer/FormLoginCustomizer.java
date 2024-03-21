@@ -13,6 +13,6 @@ public class FormLoginCustomizer implements Customizer<FormLoginConfigurer<HttpS
     @Override
     public void customize(FormLoginConfigurer<HttpSecurity> configurer) {
         // 配置登录页面
-        configurer.loginPage("/login");
+//        configurer.loginPage("/login");
     }
 }
