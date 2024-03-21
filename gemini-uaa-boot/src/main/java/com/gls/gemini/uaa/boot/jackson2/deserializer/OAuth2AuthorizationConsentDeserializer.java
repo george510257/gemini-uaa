@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.jackson2;
+package com.gls.gemini.uaa.boot.jackson2.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.jackson2;
+package com.gls.gemini.uaa.boot.jackson2.mixin;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OAuth2AccessTokenTypeMixin {
     @JsonCreator
-    OAuth2AccessTokenTypeMixin(@JsonProperty("value") String value) {
+    public OAuth2AccessTokenTypeMixin(@JsonProperty("value") String value) {
     }
 }

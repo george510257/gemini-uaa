@@ -1,15 +1,18 @@
-package com.gls.gemini.uaa.boot.jackson2;
+package com.gls.gemini.uaa.boot.jackson2.mixin;
 
 import com.fasterxml.jackson.annotation.*;
+import org.springframework.security.oauth2.core.OAuth2Token;
 
-import java.time.Instant;
+import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE,
         isGetterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class OAuth2RefreshTokenMixin {
+public class OAuth2AuthorizationTokenMixin<T extends OAuth2Token> {
+
     @JsonCreator
-    OAuth2RefreshTokenMixin(@JsonProperty("tokenValue") String tokenValue, @JsonProperty("issuedAt") Instant issuedAt, @JsonProperty("expiresAt") Instant expiresAt) {
+    public OAuth2AuthorizationTokenMixin(@JsonProperty("token") T token,
+                                         @JsonProperty("metadata") Map<String, Object> metadata) {
     }
 }
