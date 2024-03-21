@@ -13,7 +13,7 @@ public class AuthorizeHttpRequestsCustomizer implements Customizer<AuthorizeHttp
     @Override
     public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         // 配置白名单
-        registry.requestMatchers("/actuator", "/actuator/**").permitAll();
+        registry.requestMatchers("/actuator/**").permitAll();
         // 所有请求都需要认证
         registry.anyRequest().authenticated();
     }
