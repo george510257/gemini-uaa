@@ -38,6 +38,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public void save(OAuth2Authorization authorization) {
+        log.info("save authorization:{}", authorization);
         redisHelper.set(buildKey(authorization.getId()), authorization);
     }
 
@@ -48,6 +49,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public void remove(OAuth2Authorization authorization) {
+        log.info("remove authorization:{}", authorization);
         redisHelper.del(buildKey(authorization.getId()));
     }
 
@@ -59,6 +61,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public OAuth2Authorization findById(String id) {
+        log.info("findById id:{}", id);
         return redisHelper.get(buildKey(id), OAuth2Authorization.class);
     }
 
@@ -71,6 +74,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
+        log.info("findByToken token:{}, tokenType:{}", token, tokenType);
         List<OAuth2Authorization> authorizations = redisHelper.getValues(buildKey("*"), OAuth2Authorization.class);
         for (OAuth2Authorization authorization : authorizations) {
             if (hasToken(authorization, token, tokenType)) {
@@ -87,6 +91,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      * @return key
      */
     private String buildKey(String id) {
+        log.info("buildKey id:{}", id);
         return PREFIX + id;
     }
 
@@ -99,6 +104,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      * @return true if the {@link OAuth2Authorization} has the token, otherwise false
      */
     private boolean hasToken(OAuth2Authorization authorization, String token, OAuth2TokenType tokenType) {
+        log.info("hasToken authorization:{}, token:{}, tokenType:{}", authorization, token, tokenType);
         if (tokenType == null) {
             return matchesState(authorization, token) ||
                     matchesAuthorizationCode(authorization, token) ||

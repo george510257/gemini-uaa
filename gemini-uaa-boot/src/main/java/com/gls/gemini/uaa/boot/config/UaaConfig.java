@@ -37,6 +37,11 @@ public class UaaConfig {
         return new InMemoryUserDetailsManager(user);
     }
 
+    /**
+     * 注册客户端信息
+     *
+     * @return 注册客户端信息
+     */
     @Bean
     @ConditionalOnMissingBean
     public RegisteredClientRepository registeredClientRepository() {
