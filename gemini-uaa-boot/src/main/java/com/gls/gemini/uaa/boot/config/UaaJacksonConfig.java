@@ -30,7 +30,7 @@ public class UaaJacksonConfig {
      */
     @Bean
     @Order(11)
-    public OAuth2AuthorizationServerJackson2Module oAuth2AuthorizationServerJackson2Module() {
+    public OAuth2AuthorizationServerJackson2Module oauth2AuthorizationServerJackson2Module() {
         return new OAuth2AuthorizationServerJackson2Module();
     }
 }
