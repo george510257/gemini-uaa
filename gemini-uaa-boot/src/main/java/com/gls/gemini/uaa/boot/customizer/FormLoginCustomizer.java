@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FormLoginCustomizer implements Customizer<FormLoginConfigurer<HttpSecurity>> {
+    /**
+     * 定制表单登录
+     *
+     * @param configurer FormLoginConfigurer<HttpSecurity> 对象
+     */
     @Override
     public void customize(FormLoginConfigurer<HttpSecurity> configurer) {
         // 配置登录页面

@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ExceptionHandlingCustomizer implements Customizer<ExceptionHandlingConfigurer<HttpSecurity>> {
+    /**
+     * 定制异常处理
+     *
+     * @param configurer ExceptionHandlingConfigurer<HttpSecurity> 对象
+     */
     @Override
     public void customize(ExceptionHandlingConfigurer<HttpSecurity> configurer) {
         // 配置登录入口

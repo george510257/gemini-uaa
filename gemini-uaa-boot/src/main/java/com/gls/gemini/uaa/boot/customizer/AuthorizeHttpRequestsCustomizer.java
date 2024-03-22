@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AuthorizeHttpRequestsCustomizer implements Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> {
+    /**
+     * 定制请求授权
+     *
+     * @param registry AuthorizationManagerRequestMatcherRegistry 对象
+     */
     @Override
     public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         // 配置白名单
