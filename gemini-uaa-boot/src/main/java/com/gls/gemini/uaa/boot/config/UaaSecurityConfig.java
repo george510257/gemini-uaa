@@ -56,6 +56,8 @@ public class UaaSecurityConfig {
         http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
         // 表单登录
         http.formLogin(formLoginCustomizer);
+        // OAuth2资源服务器
+        http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
         // 关闭csrf
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
@@ -76,8 +78,6 @@ public class UaaSecurityConfig {
         http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher());
         // OAuth2认证服务器
         http.with(authorizationServerConfigurer, oauth2AuthorizationServerCustomizer);
-        // OAuth2资源服务器
-        http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
         // 请求授权
         http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
         // 关闭csrf

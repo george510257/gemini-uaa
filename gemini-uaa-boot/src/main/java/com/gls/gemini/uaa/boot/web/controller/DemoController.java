@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @Slf4j
 @RestController
 @RequestMapping("/demo")
@@ -20,5 +22,11 @@ public class DemoController {
     @Parameter(name = "name", description = "name", required = true)
     public String test(@RequestParam String name) {
         return "test" + name;
+    }
+
+    @GetMapping("/getAuthentication")
+    @Operation(summary = "getAuthentication", description = "getAuthentication")
+    public Principal getAuthentication(Principal principal) {
+        return principal;
     }
 }
