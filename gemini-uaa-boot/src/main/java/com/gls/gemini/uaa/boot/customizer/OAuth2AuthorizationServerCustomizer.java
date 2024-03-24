@@ -29,6 +29,7 @@ public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2Aut
 
     /**
      * 令牌端点定制
+     *
      * @param configurer OAuth2TokenEndpointConfigurer 对象
      */
     private void tokenEndpointCustomize(OAuth2TokenEndpointConfigurer configurer) {
