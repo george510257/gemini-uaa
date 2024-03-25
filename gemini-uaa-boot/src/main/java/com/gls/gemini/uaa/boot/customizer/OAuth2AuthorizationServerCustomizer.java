@@ -1,10 +1,7 @@
 package com.gls.gemini.uaa.boot.customizer;
 
 import org.springframework.security.config.Customizer;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationEndpointConfigurer;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2TokenEndpointConfigurer;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OidcConfigurer;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -49,5 +46,16 @@ public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2Aut
      * @param configurer OIDC配置器
      */
     private void oidcCustomize(OidcConfigurer configurer) {
+        // 配置用户信息端点
+        configurer.userInfoEndpoint(this::userInfoEndpointCustomize);
+
+    }
+
+    /**
+     * 用户信息端点定制
+     *
+     * @param configurer OIDC用户信息端点配置器
+     */
+    private void userInfoEndpointCustomize(OidcUserInfoEndpointConfigurer configurer) {
     }
 }
