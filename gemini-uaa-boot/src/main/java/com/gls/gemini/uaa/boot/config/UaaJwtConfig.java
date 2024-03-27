@@ -37,7 +37,7 @@ public class UaaJwtConfig {
     @Bean
     @ConditionalOnMissingBean
     public KeyPair keyPair() {
-        return KeyUtil.generateKeyPair(AsymmetricAlgorithm.RSA.getValue(),2048);
+        return KeyUtil.generateKeyPair(AsymmetricAlgorithm.RSA.getValue(), 2048);
     }
 
     /**

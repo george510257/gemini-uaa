@@ -1,14 +1,12 @@
-package com.gls.gemini.uaa.boot.customizer;
+package com.gls.gemini.uaa.boot.authentication.customizer;
 
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.stereotype.Component;
 
 /**
  * 自定义请求授权
  */
-@Component
 public class AuthorizeHttpRequestsCustomizer implements Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> {
     /**
      * 定制请求授权
