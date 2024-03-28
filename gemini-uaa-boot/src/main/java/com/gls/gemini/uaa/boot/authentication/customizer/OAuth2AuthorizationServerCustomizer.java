@@ -2,14 +2,10 @@ package com.gls.gemini.uaa.boot.authentication.customizer;
 
 import com.gls.gemini.uaa.boot.authentication.password.OAuth2PasswordAuthenticationConverter;
 import com.gls.gemini.uaa.boot.authentication.password.OAuth2PasswordAuthenticationProvider;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.core.OAuth2Token;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.*;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 
 import java.util.List;
@@ -18,7 +14,9 @@ import java.util.List;
  * 自定义OAuth2授权服务器
  */
 public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2AuthorizationServerConfigurer> {
-
+    /**
+     * HttpSecurity对象
+     */
     private final HttpSecurity httpSecurity;
 
     public OAuth2AuthorizationServerCustomizer(HttpSecurity httpSecurity) {
@@ -98,11 +96,8 @@ public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2Aut
      * @param authenticationProviders 认证提供者列表
      */
     private void tokenAuthenticationProvidersCustomize(List<AuthenticationProvider> authenticationProviders) {
-        AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        OAuth2AuthorizationService authorizationService = httpSecurity.getSharedObject(OAuth2AuthorizationService.class);
-        OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator = httpSecurity.getSharedObject(OAuth2TokenGenerator.class);
         // 创建OAuth2密码认证提供者
-        OAuth2PasswordAuthenticationProvider provider = new OAuth2PasswordAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+        OAuth2PasswordAuthenticationProvider provider = new OAuth2PasswordAuthenticationProvider(httpSecurity);
         authenticationProviders.add(provider);
     }
 
