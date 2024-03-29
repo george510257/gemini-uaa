@@ -75,7 +75,7 @@ public class OAuth2PasswordAuthenticationConverter implements AuthenticationConv
         parameters.forEach((key, value) -> {
             if (!key.equals(OAuth2ParameterNames.GRANT_TYPE) &&
                     !key.equals(OAuth2ParameterNames.SCOPE)) {
-                additionalParameters.put(key, (value.size() == 1) ? value.get(0) : value.toArray(new String[0]));
+                additionalParameters.put(key, (value.size() == 1) ? value.getFirst() : value.toArray(new String[0]));
             }
         });
         // 返回OAuth2PasswordAuthenticationToken对象
