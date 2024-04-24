@@ -1,6 +1,7 @@
 package com.gls.gemini.uaa.boot.web.service;
 
 import com.gls.gemini.starter.data.redis.helper.RedisHelper;
+import com.gls.gemini.uaa.boot.properties.UaaConstants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -24,10 +25,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class AuthorizationService implements OAuth2AuthorizationService {
-    /**
-     * 前缀
-     */
-    private static final String PREFIX = "token:authorization:";
+
     @Resource
     private RedisHelper redisHelper;
 
@@ -39,7 +37,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
     @Override
     public void save(OAuth2Authorization authorization) {
         log.info("save authorization:{}", authorization);
-        redisHelper.set(buildKey(authorization.getId()), authorization);
+        redisHelper.putHash(UaaConstants.AUTHORIZATION_REDIS_KEY, authorization.getId(), authorization);
     }
 
     /**
@@ -50,7 +48,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
     @Override
     public void remove(OAuth2Authorization authorization) {
         log.info("remove authorization:{}", authorization);
-        redisHelper.del(buildKey(authorization.getId()));
+        redisHelper.deleteHash(UaaConstants.AUTHORIZATION_REDIS_KEY, authorization.getId());
     }
 
     /**
@@ -62,7 +60,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
     @Override
     public OAuth2Authorization findById(String id) {
         log.info("findById id:{}", id);
-        return redisHelper.get(buildKey(id), OAuth2Authorization.class);
+        return redisHelper.getHash(UaaConstants.AUTHORIZATION_REDIS_KEY, id, OAuth2Authorization.class);
     }
 
     /**
@@ -75,24 +73,13 @@ public class AuthorizationService implements OAuth2AuthorizationService {
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
         log.info("findByToken token:{}, tokenType:{}", token, tokenType);
-        List<OAuth2Authorization> authorizations = redisHelper.getValues(buildKey("*"), OAuth2Authorization.class);
+        List<OAuth2Authorization> authorizations = redisHelper.valuesHash(UaaConstants.AUTHORIZATION_REDIS_KEY, OAuth2Authorization.class);
         for (OAuth2Authorization authorization : authorizations) {
             if (hasToken(authorization, token, tokenType)) {
                 return authorization;
             }
         }
         return null;
-    }
-
-    /**
-     * 构建key
-     *
-     * @param id the authorization identifier
-     * @return key
-     */
-    private String buildKey(String id) {
-        log.info("buildKey id:{}", id);
-        return PREFIX + id;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.gls.gemini.uaa.boot.web.service;
 
 import com.gls.gemini.starter.data.redis.helper.RedisHelper;
+import com.gls.gemini.uaa.boot.properties.UaaConstants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
@@ -16,7 +17,6 @@ public class AuthorizationConsentService implements OAuth2AuthorizationConsentSe
     /**
      * 前缀
      */
-    private static final String PREFIX = "token:consent:";
 
     @Resource
     private RedisHelper redisHelper;
@@ -29,7 +29,7 @@ public class AuthorizationConsentService implements OAuth2AuthorizationConsentSe
     @Override
     public void save(OAuth2AuthorizationConsent authorizationConsent) {
         log.info("save authorizationConsent:{}", authorizationConsent);
-        redisHelper.set(buildKey(authorizationConsent.getRegisteredClientId(), authorizationConsent.getPrincipalName()), authorizationConsent);
+        redisHelper.putHash(UaaConstants.AUTHORIZATION_CONSENT_REDIS_KEY, buildKey(authorizationConsent.getRegisteredClientId(), authorizationConsent.getPrincipalName()), authorizationConsent);
     }
 
     /**
@@ -40,7 +40,7 @@ public class AuthorizationConsentService implements OAuth2AuthorizationConsentSe
     @Override
     public void remove(OAuth2AuthorizationConsent authorizationConsent) {
         log.info("remove authorizationConsent:{}", authorizationConsent);
-        redisHelper.del(buildKey(authorizationConsent.getRegisteredClientId(), authorizationConsent.getPrincipalName()));
+        redisHelper.deleteHash(UaaConstants.AUTHORIZATION_CONSENT_REDIS_KEY, buildKey(authorizationConsent.getRegisteredClientId(), authorizationConsent.getPrincipalName()));
     }
 
     /**
@@ -53,7 +53,7 @@ public class AuthorizationConsentService implements OAuth2AuthorizationConsentSe
     @Override
     public OAuth2AuthorizationConsent findById(String registeredClientId, String principalName) {
         log.info("findById registeredClientId:{}, principalName:{}", registeredClientId, principalName);
-        return redisHelper.get(buildKey(registeredClientId, principalName), OAuth2AuthorizationConsent.class);
+        return redisHelper.getHash(UaaConstants.AUTHORIZATION_CONSENT_REDIS_KEY, buildKey(registeredClientId, principalName), OAuth2AuthorizationConsent.class);
     }
 
     /**
@@ -64,6 +64,6 @@ public class AuthorizationConsentService implements OAuth2AuthorizationConsentSe
      * @return key
      */
     private String buildKey(String registeredClientId, String principalName) {
-        return PREFIX + registeredClientId + ":" + principalName;
+        return registeredClientId + ":" + principalName;
     }
 }
