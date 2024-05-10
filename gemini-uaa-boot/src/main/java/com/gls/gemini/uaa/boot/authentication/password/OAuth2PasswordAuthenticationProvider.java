@@ -2,11 +2,11 @@ package com.gls.gemini.uaa.boot.authentication.password;
 
 import cn.hutool.core.collection.CollUtil;
 import com.gls.gemini.uaa.boot.util.AuthUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.core.*;
@@ -25,7 +25,6 @@ import org.springframework.security.oauth2.server.authorization.context.Authoriz
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.security.Principal;
@@ -36,6 +35,7 @@ import java.util.stream.Collectors;
  * OAuth2密码认证提供者
  */
 @Slf4j
+@RequiredArgsConstructor
 public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvider {
     /**
      * 错误URI
@@ -46,31 +46,17 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
      */
     private static final OAuth2TokenType ID_TOKEN_TOKEN_TYPE = new OAuth2TokenType(OidcParameterNames.ID_TOKEN);
     /**
-     * HttpSecurity对象
-     */
-    private final HttpSecurity httpSecurity;
-    /**
      * 认证管理器
      */
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     /**
      * 授权服务
      */
-    private OAuth2AuthorizationService authorizationService;
+    private final OAuth2AuthorizationService authorizationService;
     /**
      * 令牌生成器
      */
-    private OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
-
-    /**
-     * 构造方法
-     *
-     * @param httpSecurity HttpSecurity对象
-     */
-    public OAuth2PasswordAuthenticationProvider(HttpSecurity httpSecurity) {
-        Assert.notNull(httpSecurity, "httpSecurity cannot be null");
-        this.httpSecurity = httpSecurity;
-    }
+    private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
 
     /**
      * 认证
@@ -91,7 +77,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
             log.trace("Retrieved registered client");
         }
         // 验证客户端是否支持密码授权类型
-        if (!registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.PASSWORD)) {
+        if (registeredClient == null || !registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.PASSWORD)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
         // 获取用户名密码认证
@@ -125,7 +111,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
 
         // ----- Access token -----
         OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
-        OAuth2Token generatedAccessToken = getTokenGenerator().generate(tokenContext);
+        OAuth2Token generatedAccessToken = tokenGenerator.generate(tokenContext);
         if (generatedAccessToken == null) {
             OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
                     "The token generator failed to generate the access token.", ERROR_URI);
@@ -161,7 +147,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
 
             tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
-            OAuth2Token generatedRefreshToken = getTokenGenerator().generate(tokenContext);
+            OAuth2Token generatedRefreshToken = tokenGenerator.generate(tokenContext);
             if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
                 OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
                         "The token generator failed to generate the refresh token.", ERROR_URI);
@@ -185,7 +171,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                     .authorization(authorizationBuilder.build())   // ID token customizer may need access to the access token and/or refresh token
                     .build();
             // @formatter:on
-            OAuth2Token generatedIdToken = getTokenGenerator().generate(tokenContext);
+            OAuth2Token generatedIdToken = tokenGenerator.generate(tokenContext);
             if (!(generatedIdToken instanceof Jwt)) {
                 OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
                         "The token generator failed to generate the ID token.", ERROR_URI);
@@ -206,7 +192,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         // 构建授权
         OAuth2Authorization authorization = authorizationBuilder.build();
         // 保存授权
-        getAuthorizationService().save(authorization);
+        authorizationService.save(authorization);
 
         if (log.isTraceEnabled()) {
             log.trace("Saved authorization");
@@ -237,42 +223,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
     }
 
     /**
-     * 获取授权服务
-     *
-     * @return 授权服务
-     */
-    public OAuth2AuthorizationService getAuthorizationService() {
-        if (authorizationService == null) {
-            authorizationService = httpSecurity.getSharedObject(OAuth2AuthorizationService.class);
-        }
-        return authorizationService;
-    }
-
-    /**
-     * 获取令牌生成器
-     *
-     * @return 令牌生成器
-     */
-    public OAuth2TokenGenerator<? extends OAuth2Token> getTokenGenerator() {
-        if (tokenGenerator == null) {
-            tokenGenerator = httpSecurity.getSharedObject(OAuth2TokenGenerator.class);
-        }
-        return tokenGenerator;
-    }
-
-    /**
-     * 获取认证管理器
-     *
-     * @return 认证管理器
-     */
-    public AuthenticationManager getAuthenticationManager() {
-        if (authenticationManager == null) {
-            authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        }
-        return authenticationManager;
-    }
-
-    /**
      * 获取用户名密码认证
      *
      * @param passwordAuthentication 密码认证
@@ -286,6 +236,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         log.debug("usernamePasswordAuthenticationToken: {}", usernamePasswordAuthenticationToken);
-        return getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
+        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
     }
 }
