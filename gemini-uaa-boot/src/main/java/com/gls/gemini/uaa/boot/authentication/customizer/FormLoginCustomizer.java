@@ -3,12 +3,10 @@ package com.gls.gemini.uaa.boot.authentication.customizer;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.stereotype.Component;
 
 /**
  * 自定义表单登录
  */
-@Component
 public class FormLoginCustomizer implements Customizer<FormLoginConfigurer<HttpSecurity>> {
     /**
      * 定制表单登录

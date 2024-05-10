@@ -1,27 +1,18 @@
 package com.gls.gemini.uaa.boot.authentication.customizer;
 
 import com.gls.gemini.uaa.boot.authentication.customizer.server.*;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.stereotype.Component;
 
 /**
  * 自定义OAuth2授权服务器
  */
-@Component
+@RequiredArgsConstructor
 public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2AuthorizationServerConfigurer> {
 
-    @Resource
-    private OidcCustomizer oidcCustomizer;
-    @Resource
-    private AuthorizationEndpointCustomizer authorizationEndpointCustomizer;
-    @Resource
-    private DeviceAuthorizationEndpointCustomizer deviceAuthorizationEndpointCustomizer;
-    @Resource
-    private ClientAuthenticationCustomizer clientAuthenticationCustomizer;
-    @Resource
-    private TokenEndpointCustomizer tokenEndpointCustomizer;
+    private final HttpSecurity httpSecurity;
 
     /**
      * 定制OAuth2授权服务器
@@ -31,15 +22,15 @@ public class OAuth2AuthorizationServerCustomizer implements Customizer<OAuth2Aut
     @Override
     public void customize(OAuth2AuthorizationServerConfigurer configurer) {
         // 配置OIDC
-        configurer.oidc(oidcCustomizer);
+        configurer.oidc(new OidcCustomizer());
         // 配置授权端点
-        configurer.authorizationEndpoint(authorizationEndpointCustomizer);
+        configurer.authorizationEndpoint(new AuthorizationEndpointCustomizer());
         // 配置设备授权端点
-        configurer.deviceAuthorizationEndpoint(deviceAuthorizationEndpointCustomizer);
+        configurer.deviceAuthorizationEndpoint(new DeviceAuthorizationEndpointCustomizer());
         // 配置客户端认证
-        configurer.clientAuthentication(clientAuthenticationCustomizer);
+        configurer.clientAuthentication(new ClientAuthenticationCustomizer());
         // 配置令牌端点
-        configurer.tokenEndpoint(tokenEndpointCustomizer);
+        configurer.tokenEndpoint(new TokenEndpointCustomizer(httpSecurity));
     }
 
 }

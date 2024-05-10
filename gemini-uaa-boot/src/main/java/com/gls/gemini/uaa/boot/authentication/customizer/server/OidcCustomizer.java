@@ -2,12 +2,10 @@ package com.gls.gemini.uaa.boot.authentication.customizer.server;
 
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.*;
-import org.springframework.stereotype.Component;
 
 /**
  * 自定义OIDC配置
  */
-@Component
 public class OidcCustomizer implements Customizer<OidcConfigurer> {
     /**
      * 定制OIDC配置
