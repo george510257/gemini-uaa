@@ -32,8 +32,17 @@ import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
+/**
+ * 认证工具类
+ */
 @UtilityClass
 public class AuthUtil {
+    /**
+     * 获取表单参数
+     *
+     * @param request 请求
+     * @return 表单参数
+     */
     public MultiValueMap<String, String> getFormParameters(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -49,11 +58,24 @@ public class AuthUtil {
         return parameters;
     }
 
+    /**
+     * 抛出异常
+     *
+     * @param errorCode     错误码
+     * @param parameterName 参数名
+     * @param errorUri      错误URI
+     */
     public void throwError(String errorCode, String parameterName, String errorUri) {
         OAuth2Error error = new OAuth2Error(errorCode, "OAuth 2.0 Parameter: " + parameterName, errorUri);
         throw new OAuth2AuthenticationException(error);
     }
 
+    /**
+     * 获取认证客户端
+     *
+     * @param authentication 认证
+     * @return 认证客户端
+     */
     public OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {
         OAuth2ClientAuthenticationToken clientPrincipal = null;
         if (OAuth2ClientAuthenticationToken.class.isAssignableFrom(authentication.getPrincipal().getClass())) {
@@ -65,6 +87,12 @@ public class AuthUtil {
         throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_CLIENT);
     }
 
+    /**
+     * 获取授权服务
+     *
+     * @param httpSecurity HTTP安全
+     * @return 授权服务
+     */
     public OAuth2AuthorizationService getAuthorizationService(HttpSecurity httpSecurity) {
         OAuth2AuthorizationService authorizationService = httpSecurity.getSharedObject(OAuth2AuthorizationService.class);
         if (authorizationService == null) {
@@ -77,6 +105,12 @@ public class AuthUtil {
         return authorizationService;
     }
 
+    /**
+     * 获取令牌生成器
+     *
+     * @param httpSecurity HTTP安全
+     * @return 令牌生成器
+     */
     public OAuth2TokenGenerator<? extends OAuth2Token> getTokenGenerator(HttpSecurity httpSecurity) {
         OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator = httpSecurity.getSharedObject(OAuth2TokenGenerator.class);
         if (tokenGenerator == null) {
@@ -102,6 +136,12 @@ public class AuthUtil {
         return tokenGenerator;
     }
 
+    /**
+     * 获取JWT生成器
+     *
+     * @param httpSecurity HTTP安全
+     * @return JWT生成器
+     */
     public JwtGenerator getJwtGenerator(HttpSecurity httpSecurity) {
         JwtGenerator jwtGenerator = httpSecurity.getSharedObject(JwtGenerator.class);
         if (jwtGenerator == null) {
@@ -118,6 +158,12 @@ public class AuthUtil {
         return jwtGenerator;
     }
 
+    /**
+     * 获取JWT编码器
+     *
+     * @param httpSecurity HTTP安全
+     * @return JWT编码器
+     */
     public JwtEncoder getJwtEncoder(HttpSecurity httpSecurity) {
         JwtEncoder jwtEncoder = httpSecurity.getSharedObject(JwtEncoder.class);
         if (jwtEncoder == null) {
@@ -135,6 +181,12 @@ public class AuthUtil {
         return jwtEncoder;
     }
 
+    /**
+     * 获取JWK源
+     *
+     * @param httpSecurity HTTP安全
+     * @return JWK源
+     */
     public JWKSource<SecurityContext> getJwkSource(HttpSecurity httpSecurity) {
         JWKSource<SecurityContext> jwkSource = httpSecurity.getSharedObject(JWKSource.class);
         if (jwkSource == null) {
@@ -147,16 +199,34 @@ public class AuthUtil {
         return jwkSource;
     }
 
+    /**
+     * 获取JWT定制器
+     *
+     * @param httpSecurity HTTP安全
+     * @return JWT定制器
+     */
     public OAuth2TokenCustomizer<JwtEncodingContext> getJwtCustomizer(HttpSecurity httpSecurity) {
         ResolvableType type = ResolvableType.forClassWithGenerics(OAuth2TokenCustomizer.class, JwtEncodingContext.class);
         return getOptionalBean(httpSecurity, type);
     }
 
+    /**
+     * 获取访问令牌定制器
+     *
+     * @param httpSecurity HTTP安全
+     * @return 访问令牌定制器
+     */
     public OAuth2TokenCustomizer<OAuth2TokenClaimsContext> getAccessTokenCustomizer(HttpSecurity httpSecurity) {
         ResolvableType type = ResolvableType.forClassWithGenerics(OAuth2TokenCustomizer.class, OAuth2TokenClaimsContext.class);
         return getOptionalBean(httpSecurity, type);
     }
 
+    /**
+     * 获取授权服务器设置
+     *
+     * @param httpSecurity HTTP安全
+     * @return 授权服务器设置
+     */
     public AuthorizationServerSettings getAuthorizationServerSettings(HttpSecurity httpSecurity) {
         AuthorizationServerSettings authorizationServerSettings = httpSecurity.getSharedObject(AuthorizationServerSettings.class);
         if (authorizationServerSettings == null) {
@@ -166,10 +236,26 @@ public class AuthUtil {
         return authorizationServerSettings;
     }
 
+    /**
+     * 获取Bean
+     *
+     * @param httpSecurity HTTP安全
+     * @param type         类型
+     * @param <T>          类型
+     * @return Bean
+     */
     public <T> T getBean(HttpSecurity httpSecurity, Class<T> type) {
         return httpSecurity.getSharedObject(ApplicationContext.class).getBean(type);
     }
 
+    /**
+     * 获取Bean
+     *
+     * @param httpSecurity HTTP安全
+     * @param type         类型
+     * @param <T>          类型
+     * @return Bean
+     */
     public <T> T getBean(HttpSecurity httpSecurity, ResolvableType type) {
         ApplicationContext context = httpSecurity.getSharedObject(ApplicationContext.class);
         String[] names = context.getBeanNamesForType(type);
@@ -182,6 +268,14 @@ public class AuthUtil {
         throw new NoSuchBeanDefinitionException(type);
     }
 
+    /**
+     * 获取可选Bean
+     *
+     * @param httpSecurity HTTP安全
+     * @param type         类型
+     * @param <T>          类型
+     * @return Bean
+     */
     public <T> T getOptionalBean(HttpSecurity httpSecurity, Class<T> type) {
         Map<String, T> beansMap = BeanFactoryUtils.beansOfTypeIncludingAncestors(
                 httpSecurity.getSharedObject(ApplicationContext.class), type);
@@ -193,6 +287,14 @@ public class AuthUtil {
         return (!beansMap.isEmpty() ? beansMap.values().iterator().next() : null);
     }
 
+    /**
+     * 获取可选Bean
+     *
+     * @param httpSecurity HTTP安全
+     * @param type         类型
+     * @param <T>          类型
+     * @return Bean
+     */
     public <T> T getOptionalBean(HttpSecurity httpSecurity, ResolvableType type) {
         ApplicationContext context = httpSecurity.getSharedObject(ApplicationContext.class);
         String[] names = context.getBeanNamesForType(type);
@@ -202,6 +304,11 @@ public class AuthUtil {
         return names.length == 1 ? (T) context.getBean(names[0]) : null;
     }
 
+    /**
+     * 获取认证管理器
+     *
+     * @return 认证管理器
+     */
     @SneakyThrows
     public AuthenticationManager getAuthenticationManager() {
         return SpringUtil.getBean(AuthenticationConfiguration.class).getAuthenticationManager();
