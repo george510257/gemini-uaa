@@ -236,6 +236,12 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         log.debug("usernamePasswordAuthenticationToken: {}", usernamePasswordAuthenticationToken);
-        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        try {
+            return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        } catch (AuthenticationException e) {
+            log.error("Authentication failed: {}", e.getMessage());
+            OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, e.getMessage(), ERROR_URI);
+            throw new OAuth2AuthenticationException(error);
+        }
     }
 }
