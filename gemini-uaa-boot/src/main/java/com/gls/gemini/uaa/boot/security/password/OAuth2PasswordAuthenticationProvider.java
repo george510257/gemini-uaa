@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.password;
+package com.gls.gemini.uaa.boot.security.password;
 
 import cn.hutool.core.collection.CollUtil;
 import com.gls.gemini.uaa.boot.util.AuthUtil;

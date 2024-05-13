@@ -1,9 +1,9 @@
-package com.gls.gemini.uaa.boot.authentication.customizer.server;
+package com.gls.gemini.uaa.boot.security.customizer.server;
 
-import com.gls.gemini.uaa.boot.authentication.customizer.server.oidc.ClientRegistrationEndpointCustomizer;
-import com.gls.gemini.uaa.boot.authentication.customizer.server.oidc.LogoutEndpointCustomizer;
-import com.gls.gemini.uaa.boot.authentication.customizer.server.oidc.ProviderConfigurationEndpointCustomizer;
-import com.gls.gemini.uaa.boot.authentication.customizer.server.oidc.UserInfoEndpointCustomizer;
+import com.gls.gemini.uaa.boot.security.customizer.server.oidc.ClientRegistrationEndpointCustomizer;
+import com.gls.gemini.uaa.boot.security.customizer.server.oidc.LogoutEndpointCustomizer;
+import com.gls.gemini.uaa.boot.security.customizer.server.oidc.ProviderConfigurationEndpointCustomizer;
+import com.gls.gemini.uaa.boot.security.customizer.server.oidc.UserInfoEndpointCustomizer;
 import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OidcConfigurer;

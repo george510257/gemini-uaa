@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.handler;
+package com.gls.gemini.uaa.boot.security.handler;
 
 import com.gls.gemini.common.core.domain.Result;
 import com.gls.gemini.common.core.enums.ResultEnums;

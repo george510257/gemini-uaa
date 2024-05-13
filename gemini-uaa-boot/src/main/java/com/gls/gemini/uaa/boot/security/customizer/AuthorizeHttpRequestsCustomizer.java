@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.customizer;
+package com.gls.gemini.uaa.boot.security.customizer;
 
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

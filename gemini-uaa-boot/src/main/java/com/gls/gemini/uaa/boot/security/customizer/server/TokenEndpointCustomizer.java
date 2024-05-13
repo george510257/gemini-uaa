@@ -1,7 +1,7 @@
-package com.gls.gemini.uaa.boot.authentication.customizer.server;
+package com.gls.gemini.uaa.boot.security.customizer.server;
 
-import com.gls.gemini.uaa.boot.authentication.password.OAuth2PasswordAuthenticationConverter;
-import com.gls.gemini.uaa.boot.authentication.password.OAuth2PasswordAuthenticationProvider;
+import com.gls.gemini.uaa.boot.security.password.OAuth2PasswordAuthenticationConverter;
+import com.gls.gemini.uaa.boot.security.password.OAuth2PasswordAuthenticationProvider;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;

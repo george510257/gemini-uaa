@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.customizer.server.oidc;
+package com.gls.gemini.uaa.boot.security.customizer.server.oidc;
 
 import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;

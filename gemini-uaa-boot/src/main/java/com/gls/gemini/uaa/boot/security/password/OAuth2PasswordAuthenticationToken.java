@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.password;
+package com.gls.gemini.uaa.boot.security.password;
 
 import lombok.Getter;
 import org.springframework.security.core.Authentication;

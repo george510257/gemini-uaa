@@ -1,6 +1,6 @@
 package com.gls.gemini.uaa.boot.config;
 
-import com.gls.gemini.uaa.boot.authentication.customizer.*;
+import com.gls.gemini.uaa.boot.security.customizer.*;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

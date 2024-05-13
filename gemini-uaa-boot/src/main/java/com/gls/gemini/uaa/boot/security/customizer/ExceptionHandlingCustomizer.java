@@ -1,4 +1,4 @@
-package com.gls.gemini.uaa.boot.authentication.customizer;
+package com.gls.gemini.uaa.boot.security.customizer;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
