@@ -1,18 +1,14 @@
 package com.gls.gemini.uaa.boot.util;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -304,13 +300,4 @@ public class AuthUtil {
         return names.length == 1 ? (T) context.getBean(names[0]) : null;
     }
 
-    /**
-     * 获取认证管理器
-     *
-     * @return 认证管理器
-     */
-    @SneakyThrows
-    public AuthenticationManager getAuthenticationManager() {
-        return SpringUtil.getBean(AuthenticationConfiguration.class).getAuthenticationManager();
-    }
 }
