@@ -4,7 +4,6 @@ import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationEndpointConfigurer;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorizationEndpointCustomizer implements Customizer<OAuth2AuthorizationEndpointConfigurer> {
 
-    @Resource
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -25,8 +22,6 @@ public class AuthorizationEndpointCustomizer implements Customizer<OAuth2Authori
      */
     @Override
     public void customize(OAuth2AuthorizationEndpointConfigurer configurer) {
-        // 设置认证成功处理器
-        configurer.authorizationResponseHandler(authenticationSuccessHandler);
         // 设置认证失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }

@@ -4,7 +4,6 @@ import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OidcLogoutEndpointConfigurer;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogoutEndpointCustomizer implements Customizer<OidcLogoutEndpointConfigurer> {
 
-    @Resource
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -25,8 +22,6 @@ public class LogoutEndpointCustomizer implements Customizer<OidcLogoutEndpointCo
      */
     @Override
     public void customize(OidcLogoutEndpointConfigurer configurer) {
-        // 设置登出响应处理器
-        configurer.logoutResponseHandler(authenticationSuccessHandler);
         // 设置登出失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }

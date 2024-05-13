@@ -24,8 +24,6 @@ public class TokenEndpointCustomizer implements Customizer<OAuth2TokenEndpointCo
     private OAuth2AuthorizationService authorizationService;
     @Resource
     private OAuth2TokenGenerator<? extends OAuth2Token> oauth2TokenGenerator;
-    //    @Resource
-//    private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -41,8 +39,6 @@ public class TokenEndpointCustomizer implements Customizer<OAuth2TokenEndpointCo
         configurer.authenticationProvider(new OAuth2PasswordAuthenticationProvider(authenticationManager, authorizationService, oauth2TokenGenerator));
         configurer.accessTokenRequestConverter(new OAuth2PasswordAuthenticationConverter());
 
-        // 设置认证成功处理器
-//        configurer.accessTokenResponseHandler(authenticationSuccessHandler);
         // 设置认证失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientAuthenticationCustomizer implements Customizer<OAuth2ClientAuthenticationConfigurer> {
 
-    //    @Resource
-//    private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -24,8 +22,6 @@ public class ClientAuthenticationCustomizer implements Customizer<OAuth2ClientAu
      */
     @Override
     public void customize(OAuth2ClientAuthenticationConfigurer configurer) {
-        // 设置认证成功处理器
-//        configurer.authenticationSuccessHandler(authenticationSuccessHandler);
         // 设置认证失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }

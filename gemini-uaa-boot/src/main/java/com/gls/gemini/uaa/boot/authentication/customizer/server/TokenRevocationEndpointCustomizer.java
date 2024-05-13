@@ -4,7 +4,6 @@ import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2TokenRevocationEndpointConfigurer;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,14 +13,10 @@ import org.springframework.stereotype.Component;
 public class TokenRevocationEndpointCustomizer implements Customizer<OAuth2TokenRevocationEndpointConfigurer> {
 
     @Resource
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
     @Override
     public void customize(OAuth2TokenRevocationEndpointConfigurer configurer) {
-        // 设置撤销响应处理器
-        configurer.revocationResponseHandler(authenticationSuccessHandler);
         // 设置认证失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }

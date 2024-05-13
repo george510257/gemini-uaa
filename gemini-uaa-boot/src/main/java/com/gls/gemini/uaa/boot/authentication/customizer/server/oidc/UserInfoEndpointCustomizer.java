@@ -4,7 +4,6 @@ import jakarta.annotation.Resource;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OidcUserInfoEndpointConfigurer;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserInfoEndpointCustomizer implements Customizer<OidcUserInfoEndpointConfigurer> {
 
-    @Resource
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -25,8 +22,6 @@ public class UserInfoEndpointCustomizer implements Customizer<OidcUserInfoEndpoi
      */
     @Override
     public void customize(OidcUserInfoEndpointConfigurer configurer) {
-        // 设置用户信息响应处理器
-        configurer.userInfoResponseHandler(authenticationSuccessHandler);
         // 设置用户信息失败处理器
         configurer.errorResponseHandler(authenticationFailureHandler);
     }
