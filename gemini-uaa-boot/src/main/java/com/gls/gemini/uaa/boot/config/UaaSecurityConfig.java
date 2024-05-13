@@ -1,6 +1,7 @@
 package com.gls.gemini.uaa.boot.config;
 
 import com.gls.gemini.uaa.boot.authentication.customizer.*;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -14,6 +15,18 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class UaaSecurityConfig {
+    @Resource
+    private AuthorizeHttpRequestsCustomizer authorizeHttpRequestsCustomizer;
+    @Resource
+    private FormLoginCustomizer formLoginCustomizer;
+    @Resource
+    private OAuth2ResourceServerCustomizer oauth2ResourceServerCustomizer;
+    @Resource
+    private CsrfCustomizer csrfCustomizer;
+    @Resource
+    private ExceptionHandlingCustomizer exceptionHandlingCustomizer;
+    @Resource
+    private OAuth2AuthorizationServerCustomizer authorizationServerCustomizer;
 
     /**
      * 默认安全过滤器链
@@ -25,13 +38,13 @@ public class UaaSecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         // 请求授权
-        http.authorizeHttpRequests(new AuthorizeHttpRequestsCustomizer());
+        http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
         // 表单登录
-        http.formLogin(new FormLoginCustomizer());
+        http.formLogin(formLoginCustomizer);
         // OAuth2资源服务器
-        http.oauth2ResourceServer(new OAuth2ResourceServerCustomizer());
+        http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
         // 关闭csrf
-        http.csrf(new CsrfCustomizer());
+        http.csrf(csrfCustomizer);
         return http.build();
     }
 
@@ -49,13 +62,13 @@ public class UaaSecurityConfig {
         // 安全匹配
         http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher());
         // OAuth2认证服务器
-        http.with(authorizationServerConfigurer, new OAuth2AuthorizationServerCustomizer(http));
+        http.with(authorizationServerConfigurer, authorizationServerCustomizer);
         // 请求授权
-        http.authorizeHttpRequests(new AuthorizeHttpRequestsCustomizer());
+        http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
         // 异常处理
-        http.exceptionHandling(new ExceptionHandlingCustomizer());
+        http.exceptionHandling(exceptionHandlingCustomizer);
         // 关闭csrf
-        http.csrf(new CsrfCustomizer());
+        http.csrf(csrfCustomizer);
         // 返回
         return http.build();
     }
