@@ -36,4 +36,4 @@ server:
   port: 8082
 logging:
   level:
-    org.springframework.security: trace
+    org.springframework: trace
