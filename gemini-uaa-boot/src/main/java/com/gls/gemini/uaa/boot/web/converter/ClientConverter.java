@@ -1,14 +1,20 @@
 package com.gls.gemini.uaa.boot.web.converter;
 
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.map.MapUtil;
 import com.gls.gemini.common.core.base.BaseConverter;
 import com.gls.gemini.upms.sdk.vo.ClientInfoVo;
 import org.mapstruct.*;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ConfigurationSettingNames;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,6 +27,7 @@ import java.util.stream.Collectors;
 public abstract class ClientConverter implements BaseConverter<RegisteredClient, ClientInfoVo> {
 
     @Mappings({
+            @Mapping(target = "id", source = "id"),
             @Mapping(target = "clientId", source = "clientId"),
             @Mapping(target = "clientIdIssuedAt", source = "clientIdIssuedAt"),
             @Mapping(target = "clientSecret", source = "clientSecret"),
@@ -99,10 +106,51 @@ public abstract class ClientConverter implements BaseConverter<RegisteredClient,
     }
 
     private ClientSettings reverseClientSettings(Map<String, Object> clientSettings) {
-        return ClientSettings.withSettings(clientSettings).build();
+        ClientSettings.Builder builder = ClientSettings.builder();
+        if (clientSettings.containsKey(ConfigurationSettingNames.Client.REQUIRE_PROOF_KEY)) {
+            builder.requireProofKey(MapUtil.getBool(clientSettings, ConfigurationSettingNames.Client.REQUIRE_PROOF_KEY));
+        }
+        if (clientSettings.containsKey(ConfigurationSettingNames.Client.REQUIRE_AUTHORIZATION_CONSENT)) {
+            builder.requireAuthorizationConsent(MapUtil.getBool(clientSettings, ConfigurationSettingNames.Client.REQUIRE_AUTHORIZATION_CONSENT));
+        }
+        if (clientSettings.containsKey(ConfigurationSettingNames.Client.JWK_SET_URL)) {
+            builder.jwkSetUrl(MapUtil.getStr(clientSettings, ConfigurationSettingNames.Client.JWK_SET_URL));
+        }
+        if (clientSettings.containsKey(ConfigurationSettingNames.Client.TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM)) {
+            builder.tokenEndpointAuthenticationSigningAlgorithm(SignatureAlgorithm.from(MapUtil.getStr(clientSettings, ConfigurationSettingNames.Client.TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM)));
+        }
+        return builder.build();
     }
 
     private TokenSettings reverseTokenSettings(Map<String, Object> tokenSettings) {
-        return TokenSettings.withSettings(tokenSettings).build();
+        TokenSettings.Builder builder = TokenSettings.builder();
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE)) {
+            builder.authorizationCodeTimeToLive(MapUtil.get(tokenSettings, ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE, Duration.class));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE)) {
+            builder.accessTokenTimeToLive(MapUtil.get(tokenSettings, ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE, Duration.class));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT)) {
+            builder.accessTokenFormat(getAccessTokenFormat(tokenSettings));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE)) {
+            builder.deviceCodeTimeToLive(MapUtil.get(tokenSettings, ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE, Duration.class));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS)) {
+            builder.reuseRefreshTokens(MapUtil.getBool(tokenSettings, ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE)) {
+            builder.refreshTokenTimeToLive(MapUtil.get(tokenSettings, ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE, Duration.class));
+        }
+        if (tokenSettings.containsKey(ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM)) {
+            builder.idTokenSignatureAlgorithm(SignatureAlgorithm.from(MapUtil.getStr(tokenSettings, ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM)));
+        }
+        return builder.build();
+    }
+
+    private OAuth2TokenFormat getAccessTokenFormat(Map<String, Object> tokenSettings) {
+        Map<String, Object> map = MapUtil.get(tokenSettings, ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT, new TypeReference<>() {
+        });
+        return new OAuth2TokenFormat(MapUtil.getStr(map, "value"));
     }
 }

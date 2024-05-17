@@ -42,7 +42,7 @@ public abstract class AuthorizationConsentConverter implements BaseConverter<OAu
         return reverseByBuilder(vo, builder);
     }
 
-    private OAuth2AuthorizationConsent reverseByBuilder(AuthorizationConsentInfoVo vo, OAuth2AuthorizationConsent.Builder builder) {
+    public OAuth2AuthorizationConsent reverseByBuilder(AuthorizationConsentInfoVo vo, OAuth2AuthorizationConsent.Builder builder) {
         for (String authority : vo.getAuthorities()) {
             builder.authority(new SimpleGrantedAuthority(authority));
         }
@@ -50,16 +50,16 @@ public abstract class AuthorizationConsentConverter implements BaseConverter<OAu
     }
 
     @Named("getUserId")
-    protected Long getUserId(String principalName) {
+    public Long getUserId(String principalName) {
         return userService.loadUserByUsername(principalName).getId();
     }
 
     @Named("getAuthorities")
-    protected Set<String> getAuthorities(Set<GrantedAuthority> authorities) {
+    public Set<String> getAuthorities(Set<GrantedAuthority> authorities) {
         return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
     }
 
-    private String getPrincipalName(Long userId) {
+    public String getPrincipalName(Long userId) {
         return userService.findById(userId).getUsername();
     }
 }

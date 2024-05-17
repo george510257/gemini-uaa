@@ -32,6 +32,5 @@ public class UaaJackson2Module extends SimpleModule {
         context.setMixInAnnotations(OAuth2RefreshToken.class, OAuth2RefreshTokenMixin.class);
         context.setMixInAnnotations(OAuth2UserCode.class, OAuth2UserCodeMixin.class);
         context.setMixInAnnotations(OidcIdToken.class, OidcIdTokenMixin.class);
-
     }
 }

@@ -1,7 +1,8 @@
 package com.gls.gemini.uaa.boot.web.service;
 
-import com.gls.gemini.starter.data.redis.helper.RedisHelper;
-import com.gls.gemini.uaa.boot.properties.UaaConstants;
+import cn.hutool.core.util.NumberUtil;
+import com.gls.gemini.uaa.boot.web.converter.AuthorizationConverter;
+import com.gls.gemini.upms.sdk.feign.AuthorizationInfoFeign;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -27,7 +28,9 @@ import java.util.List;
 public class AuthorizationService implements OAuth2AuthorizationService {
 
     @Resource
-    private RedisHelper redisHelper;
+    private AuthorizationConverter authorizationConverter;
+    @Resource
+    private AuthorizationInfoFeign authorizationInfoFeign;
 
     /**
      * 保存授权
@@ -36,8 +39,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public void save(OAuth2Authorization authorization) {
-        log.info("save authorization:{}", authorization);
-        redisHelper.putHash(UaaConstants.AUTHORIZATION_REDIS_KEY, authorization.getId(), authorization);
+        authorizationInfoFeign.insert(authorizationConverter.convert(authorization));
     }
 
     /**
@@ -47,8 +49,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public void remove(OAuth2Authorization authorization) {
-        log.info("remove authorization:{}", authorization);
-        redisHelper.deleteHash(UaaConstants.AUTHORIZATION_REDIS_KEY, authorization.getId());
+        authorizationInfoFeign.delete(NumberUtil.parseLong(authorization.getId()));
     }
 
     /**
@@ -59,8 +60,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public OAuth2Authorization findById(String id) {
-        log.info("findById id:{}", id);
-        return redisHelper.getHash(UaaConstants.AUTHORIZATION_REDIS_KEY, id, OAuth2Authorization.class);
+        return authorizationConverter.reverse(authorizationInfoFeign.get(NumberUtil.parseLong(id)).getData());
     }
 
     /**
@@ -72,14 +72,14 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-        log.info("findByToken token:{}, tokenType:{}", token, tokenType);
-        List<OAuth2Authorization> authorizations = redisHelper.valuesHash(UaaConstants.AUTHORIZATION_REDIS_KEY, OAuth2Authorization.class);
-        for (OAuth2Authorization authorization : authorizations) {
-            if (hasToken(authorization, token, tokenType)) {
-                return authorization;
-            }
+        List<OAuth2Authorization> authorizations = authorizationConverter.reverseList(authorizationInfoFeign.getByToken(token).getData());
+        if (authorizations == null || authorizations.isEmpty()) {
+            return null;
         }
-        return null;
+        return authorizations.stream()
+                .filter(authorization -> hasToken(authorization, token, tokenType))
+                .findFirst()
+                .orElse(null);
     }
 
     /**

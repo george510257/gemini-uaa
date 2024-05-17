@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2Token;
@@ -96,5 +98,16 @@ public class UaaConfig {
     @ConditionalOnMissingBean
     public OAuth2TokenGenerator<? extends OAuth2Token> oauth2TokenGenerator(HttpSecurity http) {
         return AuthUtil.getTokenGenerator(http);
+    }
+
+    /**
+     * 密码编码器
+     *
+     * @return 密码编码器
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

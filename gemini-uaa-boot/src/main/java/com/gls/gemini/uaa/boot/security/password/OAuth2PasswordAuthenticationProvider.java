@@ -239,7 +239,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         try {
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (AuthenticationException e) {
-            log.error("Authentication failed: {}", e.getMessage());
+            log.error("Authentication failed", e);
             OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, e.getMessage(), ERROR_URI);
             throw new OAuth2AuthenticationException(error);
         }
