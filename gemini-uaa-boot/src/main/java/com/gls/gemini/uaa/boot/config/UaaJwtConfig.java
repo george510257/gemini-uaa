@@ -3,6 +3,7 @@ package com.gls.gemini.uaa.boot.config;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.crypto.KeyUtil;
 import cn.hutool.crypto.asymmetric.AsymmetricAlgorithm;
+import cn.hutool.json.JSONUtil;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -95,7 +96,7 @@ public class UaaJwtConfig {
             Object user = context.getPrincipal().getPrincipal();
             if (user instanceof UserDetails userDetails) {
                 // 设置用户信息
-                context.getClaims().claim("user_info", userDetails);
+                context.getClaims().claim("user_info", JSONUtil.toJsonStr(userDetails));
             }
         };
     }
