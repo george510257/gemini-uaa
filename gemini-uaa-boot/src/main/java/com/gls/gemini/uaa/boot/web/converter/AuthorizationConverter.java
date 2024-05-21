@@ -2,6 +2,7 @@ package com.gls.gemini.uaa.boot.web.converter;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import com.gls.gemini.common.core.base.BaseConverter;
 import com.gls.gemini.uaa.boot.web.service.ClientService;
 import com.gls.gemini.uaa.boot.web.service.UserService;
@@ -147,7 +148,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.attribute(OAuth2ParameterNames.STATE, vo.getState());
         }
         // authorizationCode
-        if (vo.getAuthorizationCodeValue() != null) {
+        if (StrUtil.isNotBlank(vo.getAuthorizationCodeValue())) {
             OAuth2AuthorizationCode authorizationCode = new OAuth2AuthorizationCode(
                     vo.getAuthorizationCodeValue(),
                     vo.getAuthorizationCodeIssuedAt().toInstant(),
@@ -155,7 +156,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.token(authorizationCode, metadata -> metadata.putAll(vo.getAuthorizationCodeMetadata()));
         }
         // accessToken
-        if (vo.getAccessTokenValue() != null) {
+        if (StrUtil.isNotBlank(vo.getAccessTokenValue())) {
             OAuth2AccessToken accessToken = new OAuth2AccessToken(
                     OAuth2AccessToken.TokenType.BEARER,
                     vo.getAccessTokenValue(),
@@ -165,7 +166,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.token(accessToken, metadata -> metadata.putAll(vo.getAccessTokenMetadata()));
         }
         // refreshToken
-        if (vo.getRefreshTokenValue() != null) {
+        if (StrUtil.isNotBlank(vo.getRefreshTokenValue())) {
             OAuth2RefreshToken refreshToken = new OAuth2RefreshToken(
                     vo.getRefreshTokenValue(),
                     vo.getRefreshTokenIssuedAt().toInstant(),
@@ -173,7 +174,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.token(refreshToken, metadata -> metadata.putAll(vo.getRefreshTokenMetadata()));
         }
         // oidc id token
-        if (vo.getOidcIdTokenValue() != null) {
+        if (StrUtil.isNotBlank(vo.getOidcIdTokenValue())) {
             OidcIdToken oidcIdToken = new OidcIdToken(
                     vo.getOidcIdTokenValue(),
                     vo.getOidcIdTokenIssuedAt().toInstant(),
@@ -182,7 +183,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.token(oidcIdToken, metadata -> metadata.putAll(vo.getOidcIdTokenMetadata()));
         }
         // user code token
-        if (vo.getUserCodeValue() != null) {
+        if (StrUtil.isNotBlank(vo.getUserCodeValue())) {
             OAuth2UserCode userCode = new OAuth2UserCode(
                     vo.getUserCodeValue(),
                     vo.getUserCodeIssuedAt().toInstant(),
@@ -190,7 +191,7 @@ public class AuthorizationConverter implements BaseConverter<OAuth2Authorization
             builder.token(userCode, metadata -> metadata.putAll(vo.getUserCodeMetadata()));
         }
         // device code token
-        if (vo.getDeviceCodeValue() != null) {
+        if (StrUtil.isNotBlank(vo.getDeviceCodeValue())) {
             OAuth2DeviceCode deviceCode = new OAuth2DeviceCode(
                     vo.getDeviceCodeValue(),
                     vo.getDeviceCodeIssuedAt().toInstant(),

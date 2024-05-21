@@ -24,7 +24,7 @@ public abstract class UserConverter implements BaseConverter<UserDto, UserInfoVo
             @Mapping(target = "authorities", ignore = true),
             @Mapping(target = "roles", expression = "java(getRoles(user.getAuthorities()))"),
     })
-    public abstract UserDto convert(UserDetails user);
+    public abstract UserDto convertByUserDetails(UserDetails user);
 
     @Named("getRoles")
     protected List<RoleDto> getRoles(Collection<? extends GrantedAuthority> authorities) {

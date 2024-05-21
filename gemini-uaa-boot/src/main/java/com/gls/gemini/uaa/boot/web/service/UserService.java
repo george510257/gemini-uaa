@@ -40,7 +40,7 @@ public class UserService implements UserDetailsManager, UserDetailsPasswordServi
             userInfoFeign.insert(userConverter.convert(userDto));
             return;
         }
-        UserDto userDto = userConverter.convert(user);
+        UserDto userDto = userConverter.convertByUserDetails(user);
         userInfoFeign.insert(userConverter.convert(userDto));
     }
 
@@ -50,7 +50,7 @@ public class UserService implements UserDetailsManager, UserDetailsPasswordServi
             userInfoFeign.update(userDto.getId(), userConverter.convert(userDto));
             return;
         }
-        UserDto userDto = userConverter.convert(user);
+        UserDto userDto = userConverter.convertByUserDetails(user);
         userInfoFeign.update(userDto.getId(), userConverter.convert(userDto));
     }
 

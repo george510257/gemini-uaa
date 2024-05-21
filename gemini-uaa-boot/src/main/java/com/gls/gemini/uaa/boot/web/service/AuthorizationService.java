@@ -39,7 +39,7 @@ public class AuthorizationService implements OAuth2AuthorizationService {
      */
     @Override
     public void save(OAuth2Authorization authorization) {
-        authorizationInfoFeign.insert(authorizationConverter.convert(authorization));
+        authorizationInfoFeign.save(authorizationConverter.convert(authorization));
     }
 
     /**
