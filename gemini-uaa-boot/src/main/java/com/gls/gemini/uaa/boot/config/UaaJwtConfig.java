@@ -96,7 +96,7 @@ public class UaaJwtConfig {
             Object user = context.getPrincipal().getPrincipal();
             if (user instanceof UserDetails userDetails) {
                 // 设置用户信息
-                context.getClaims().claim("user_info", JSONUtil.toJsonStr(userDetails));
+                context.getClaims().claim("user", JSONUtil.toJsonStr(userDetails));
             }
         };
     }

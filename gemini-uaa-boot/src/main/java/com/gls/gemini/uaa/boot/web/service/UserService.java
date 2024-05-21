@@ -36,20 +36,12 @@ public class UserService implements UserDetailsManager, UserDetailsPasswordServi
         if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("用户已存在");
         }
-        if (user instanceof UserDto userDto) {
-            userInfoFeign.insert(userConverter.convert(userDto));
-            return;
-        }
         UserDto userDto = userConverter.convertByUserDetails(user);
         userInfoFeign.insert(userConverter.convert(userDto));
     }
 
     @Override
     public void updateUser(UserDetails user) {
-        if (user instanceof UserDto userDto) {
-            userInfoFeign.update(userDto.getId(), userConverter.convert(userDto));
-            return;
-        }
         UserDto userDto = userConverter.convertByUserDetails(user);
         userInfoFeign.update(userDto.getId(), userConverter.convert(userDto));
     }

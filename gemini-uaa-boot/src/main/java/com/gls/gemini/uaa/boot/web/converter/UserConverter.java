@@ -18,16 +18,30 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class UserConverter implements BaseConverter<UserDto, UserInfoVo> {
 
+    public UserDto convertByUserDetails(UserDetails user) {
+        if (user instanceof UserDto userDto) {
+            return userDto;
+        }
+        return convertFromUserDetails(user);
+    }
+
     @Mappings({
             @Mapping(target = "username", source = "username"),
             @Mapping(target = "password", source = "password"),
             @Mapping(target = "authorities", ignore = true),
             @Mapping(target = "roles", expression = "java(getRoles(user.getAuthorities()))"),
     })
-    public abstract UserDto convertByUserDetails(UserDetails user);
+    public abstract UserDto convertFromUserDetails(UserDetails user);
 
     @Named("getRoles")
     protected List<RoleDto> getRoles(Collection<? extends GrantedAuthority> authorities) {
-        return null;
+        return authorities.stream().map(authority -> {
+            if (authority instanceof RoleDto roleDto) {
+                return roleDto;
+            }
+            RoleDto roleDto = new RoleDto();
+            roleDto.setCode(authority.getAuthority());
+            return roleDto;
+        }).toList();
     }
 }

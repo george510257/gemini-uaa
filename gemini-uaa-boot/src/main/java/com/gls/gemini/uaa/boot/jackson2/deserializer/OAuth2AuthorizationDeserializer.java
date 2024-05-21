@@ -18,9 +18,6 @@ import java.util.Set;
 
 public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Authorization> {
 
-    private static final TypeReference<AuthorizationGrantType> AUTHORIZATION_GRANT_TYPE = new TypeReference<>() {
-    };
-
     private static final TypeReference<Map<String, OAuth2Authorization.Token<?>>> TOKENS = new TypeReference<>() {
     };
 
@@ -34,7 +31,7 @@ public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Auth
         String id = Jackson2Util.findStringValue(node, "id");
         String registeredClientId = Jackson2Util.findStringValue(node, "registeredClientId");
         String principalName = Jackson2Util.findStringValue(node, "principalName");
-        AuthorizationGrantType authorizationGrantType = Jackson2Util.findValue(node, "authorizationGrantType", AUTHORIZATION_GRANT_TYPE, mapper);
+        AuthorizationGrantType authorizationGrantType = Jackson2Util.findValue(node, "authorizationGrantType", AuthorizationGrantType.class, mapper);
         Set<String> authorizedScopes = Jackson2Util.findValue(node, "authorizedScopes", Jackson2Util.SET_STRING_TYPE_REFERENCE, mapper);
         Map<String, OAuth2Authorization.Token<?>> tokens = Jackson2Util.findValue(node, "tokens", TOKENS, mapper);
         Map<String, Object> attributes = Jackson2Util.findValue(node, "attributes", Jackson2Util.MAP_STRING_OBJECT_TYPE_REFERENCE, mapper);
