@@ -14,8 +14,13 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * OAuth2AuthorizationConsent 反序列化器
+ */
 public class OAuth2AuthorizationConsentDeserializer extends JsonDeserializer<OAuth2AuthorizationConsent> {
-
+    /**
+     * Set 类型的 TypeReference 对象
+     */
     private static final TypeReference<Set<SimpleGrantedAuthority>> SET_TYPE_REFERENCE = new TypeReference<>() {
     };
 
