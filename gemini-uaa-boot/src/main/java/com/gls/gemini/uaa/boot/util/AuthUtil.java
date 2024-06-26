@@ -5,7 +5,6 @@ import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
@@ -17,10 +16,7 @@ import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -81,24 +77,6 @@ public class AuthUtil {
             return clientPrincipal;
         }
         throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_CLIENT);
-    }
-
-    /**
-     * 获取授权服务
-     *
-     * @param httpSecurity HTTP安全
-     * @return 授权服务
-     */
-    public OAuth2AuthorizationService getAuthorizationService(HttpSecurity httpSecurity) {
-        OAuth2AuthorizationService authorizationService = httpSecurity.getSharedObject(OAuth2AuthorizationService.class);
-        if (authorizationService == null) {
-            authorizationService = getOptionalBean(httpSecurity, OAuth2AuthorizationService.class);
-            if (authorizationService == null) {
-                authorizationService = new InMemoryOAuth2AuthorizationService();
-            }
-            httpSecurity.setSharedObject(OAuth2AuthorizationService.class, authorizationService);
-        }
-        return authorizationService;
     }
 
     /**
@@ -215,53 +193,6 @@ public class AuthUtil {
     public OAuth2TokenCustomizer<OAuth2TokenClaimsContext> getAccessTokenCustomizer(HttpSecurity httpSecurity) {
         ResolvableType type = ResolvableType.forClassWithGenerics(OAuth2TokenCustomizer.class, OAuth2TokenClaimsContext.class);
         return getOptionalBean(httpSecurity, type);
-    }
-
-    /**
-     * 获取授权服务器设置
-     *
-     * @param httpSecurity HTTP安全
-     * @return 授权服务器设置
-     */
-    public AuthorizationServerSettings getAuthorizationServerSettings(HttpSecurity httpSecurity) {
-        AuthorizationServerSettings authorizationServerSettings = httpSecurity.getSharedObject(AuthorizationServerSettings.class);
-        if (authorizationServerSettings == null) {
-            authorizationServerSettings = getBean(httpSecurity, AuthorizationServerSettings.class);
-            httpSecurity.setSharedObject(AuthorizationServerSettings.class, authorizationServerSettings);
-        }
-        return authorizationServerSettings;
-    }
-
-    /**
-     * 获取Bean
-     *
-     * @param httpSecurity HTTP安全
-     * @param type         类型
-     * @param <T>          类型
-     * @return Bean
-     */
-    public <T> T getBean(HttpSecurity httpSecurity, Class<T> type) {
-        return httpSecurity.getSharedObject(ApplicationContext.class).getBean(type);
-    }
-
-    /**
-     * 获取Bean
-     *
-     * @param httpSecurity HTTP安全
-     * @param type         类型
-     * @param <T>          类型
-     * @return Bean
-     */
-    public <T> T getBean(HttpSecurity httpSecurity, ResolvableType type) {
-        ApplicationContext context = httpSecurity.getSharedObject(ApplicationContext.class);
-        String[] names = context.getBeanNamesForType(type);
-        if (names.length == 1) {
-            return (T) context.getBean(names[0]);
-        }
-        if (names.length > 1) {
-            throw new NoUniqueBeanDefinitionException(type, names);
-        }
-        throw new NoSuchBeanDefinitionException(type);
     }
 
     /**
