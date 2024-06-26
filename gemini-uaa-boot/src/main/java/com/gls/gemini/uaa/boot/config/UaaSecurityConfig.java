@@ -1,6 +1,9 @@
 package com.gls.gemini.uaa.boot.config;
 
-import com.gls.gemini.uaa.boot.security.customizer.*;
+import com.gls.gemini.starter.security.servlet.customizer.AuthorizeHttpRequestsCustomizer;
+import com.gls.gemini.starter.security.servlet.customizer.CsrfCustomizer;
+import com.gls.gemini.starter.security.servlet.customizer.ExceptionHandlingCustomizer;
+import com.gls.gemini.uaa.boot.security.customizer.OAuth2AuthorizationServerCustomizer;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,35 +21,11 @@ public class UaaSecurityConfig {
     @Resource
     private AuthorizeHttpRequestsCustomizer authorizeHttpRequestsCustomizer;
     @Resource
-    private FormLoginCustomizer formLoginCustomizer;
-    @Resource
-    private OAuth2ResourceServerCustomizer oauth2ResourceServerCustomizer;
-    @Resource
     private CsrfCustomizer csrfCustomizer;
     @Resource
     private ExceptionHandlingCustomizer exceptionHandlingCustomizer;
     @Resource
     private OAuth2AuthorizationServerCustomizer authorizationServerCustomizer;
-
-    /**
-     * 默认安全过滤器链
-     *
-     * @param http HttpSecurity 对象
-     * @return SecurityFilterChain 对象
-     * @throws Exception 异常
-     */
-    @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        // 请求授权
-        http.authorizeHttpRequests(authorizeHttpRequestsCustomizer);
-        // 表单登录
-        http.formLogin(formLoginCustomizer);
-        // OAuth2资源服务器
-        http.oauth2ResourceServer(oauth2ResourceServerCustomizer);
-        // 关闭csrf
-        http.csrf(csrfCustomizer);
-        return http.build();
-    }
 
     /**
      * 认证服务器安全过滤器链
