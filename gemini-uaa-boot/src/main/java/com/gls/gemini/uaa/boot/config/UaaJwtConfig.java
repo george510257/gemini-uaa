@@ -3,7 +3,6 @@ package com.gls.gemini.uaa.boot.config;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.crypto.KeyUtil;
 import cn.hutool.crypto.asymmetric.AsymmetricAlgorithm;
-import cn.hutool.json.JSONUtil;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -12,13 +11,10 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
@@ -84,20 +80,4 @@ public class UaaJwtConfig {
         return new NimbusJwtEncoder(jwkSource);
     }
 
-    /**
-     * Jwt编码上下文OAuth2令牌定制器
-     *
-     * @return Jwt编码上下文OAuth2令牌定制器
-     */
-    @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtEncodingContextOAuth2TokenCustomizer() {
-        return context -> {
-            // 获取用户信息
-            Object user = context.getPrincipal().getPrincipal();
-            if (user instanceof UserDetails userDetails) {
-                // 设置用户信息
-                context.getClaims().claim("user", JSONUtil.toJsonStr(userDetails));
-            }
-        };
-    }
 }

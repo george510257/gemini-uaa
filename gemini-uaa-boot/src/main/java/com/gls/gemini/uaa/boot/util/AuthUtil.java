@@ -90,12 +90,15 @@ public class AuthUtil {
         if (tokenGenerator == null) {
             tokenGenerator = getOptionalBean(httpSecurity, OAuth2TokenGenerator.class);
             if (tokenGenerator == null) {
+                // JWT生成器
                 JwtGenerator jwtGenerator = getJwtGenerator(httpSecurity);
+                // 访问令牌生成器
                 OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
                 OAuth2TokenCustomizer<OAuth2TokenClaimsContext> accessTokenCustomizer = getAccessTokenCustomizer(httpSecurity);
                 if (accessTokenCustomizer != null) {
                     accessTokenGenerator.setAccessTokenCustomizer(accessTokenCustomizer);
                 }
+                // 刷新令牌生成器
                 OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
                 if (jwtGenerator != null) {
                     tokenGenerator = new DelegatingOAuth2TokenGenerator(
