@@ -77,7 +77,11 @@ public class UserService implements UserDetailsManager, UserDetailsPasswordServi
 
     @Override
     public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userInfoFeign.loadUserByUsername(username).getData();
+        UserDto userDto = userInfoFeign.loadUserByUsername(username).getData();
+        if (userDto == null) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
+        return userDto;
     }
 
     public UserDto findById(Long userId) {
